@@ -1,0 +1,6 @@
+/*.gem
+/gems
+/scratch*
+/lib/test_bench/bootstrap.rb
+/lib/test_bench/fixture.rb
+/lib/test_bench/fixture
