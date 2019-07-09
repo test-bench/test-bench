@@ -15,8 +15,26 @@ module TestBench
         self.start_time = now
       end
 
+      def stop(now=nil)
+        now ||= ::Time.now.utc
+
+        if mode == Mode.stopped
+          raise Error, "Timer has not started"
+        end
+
+        start_time = reset
+
+        elapsed = now - start_time
+
+        elapsed.round(3)
+      end
+
       def running?
         mode == Mode.running
+      end
+
+      def stopped?
+        mode == Mode.stopped
       end
 
       def mode
@@ -25,6 +43,14 @@ module TestBench
         else
           Mode.running
         end
+      end
+
+      def reset
+        previous_start_time = self.start_time
+
+        self.start_time = nil
+
+        previous_start_time
       end
 
       module Mode
