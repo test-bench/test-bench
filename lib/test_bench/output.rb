@@ -7,6 +7,11 @@ module TestBench
     end
     attr_writer :writer
 
+    def timer
+      @timer ||= Timer::Substitute.build
+    end
+    attr_writer :timer
+
     def omit_backtrace_pattern
       @omit_backtrace_pattern ||= Defaults.omit_backtrace_pattern
     end
@@ -44,6 +49,10 @@ module TestBench
     attr_accessor :error_details
 
     attr_accessor :previous_error
+
+    def start_run
+      timer.start
+    end
 
     def finish_run(_)
       unless errors_by_file.empty?
