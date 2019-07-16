@@ -217,6 +217,13 @@ module TestBench
       print_error_details unless error_details.nil?
     end
 
+    def comment(text)
+      writer
+        .indent
+        .text(text)
+        .newline
+    end
+
     def finish_test(_, result)
       self.test_count += 1
 
