@@ -84,7 +84,7 @@ module TestBench
       timer.start
     end
 
-    def finish_run(_)
+    def finish_run(result)
       unless errors_by_file.empty?
         writer
           .escape_code(:bold)
@@ -101,6 +101,76 @@ module TestBench
             .newline
         end
 
+        writer.newline
+      end
+
+      return unless timer.running?
+
+      elapsed_time = timer.stop
+
+      failed = !result
+
+      if elapsed_time.nonzero?
+        tests_per_second = test_count / elapsed_time
+      end
+
+      if failed
+        writer.escape_code(:red)
+      end
+
+      writer
+        .text("Finished running #{numeric_label(file_count, 'file')}")
+        .newline
+        .text("Ran %s in %.3fs (%.1f tests/second)" % [
+          numeric_label(test_count, 'test'),
+          elapsed_time,
+          tests_per_second || 0])
+        .newline
+
+      if pass_count.nonzero? && !failed
+        writer
+          .escape_code(:green)
+          .text("#{pass_count} passed")
+          .escape_code(:reset_fg)
+      else
+        writer.text("#{pass_count} passed")
+      end
+
+      writer.text(", ")
+
+      if skip_count.nonzero? && !failed
+        writer
+          .escape_code(:yellow)
+          .text("#{skip_count} skipped")
+          .escape_code(:reset_fg)
+      else
+        writer.text("#{skip_count} skipped")
+      end
+
+      writer.text(", ")
+
+      if failure_count.nonzero?
+        writer
+          .escape_code(:bold)
+          .text("#{failure_count} failed")
+          .escape_code(:reset_intensity)
+      else
+        writer.text("0 failed")
+      end
+
+      writer.text(", ")
+
+      if failed
+        writer
+          .escape_code(:bold)
+          .text(numeric_label(error_count, 'total error'))
+          .escape_code(:reset_intensity)
+          .escape_code(:reset_fg)
+      else
+        writer.text("0 total errors")
+      end
+
+      2.times do
         writer.newline
       end
     end
@@ -311,6 +381,16 @@ module TestBench
       writer.text(error_details)
 
       self.error_details = nil
+    end
+
+    def numeric_label(number, label, plural_text=nil)
+      plural_text ||= 's'
+
+      if number == 1
+        "#{number} #{label}"
+      else
+        "#{number} #{label}#{plural_text}"
+      end
     end
 
     module Defaults
