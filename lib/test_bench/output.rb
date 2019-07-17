@@ -46,6 +46,11 @@ module TestBench
     end
     attr_writer :failure_count
 
+    def file_count
+      @file_count ||= 0
+    end
+    attr_writer :file_count
+
     def pass_count
       @pass_count ||= 0
     end
@@ -98,6 +103,10 @@ module TestBench
 
         writer.newline
       end
+    end
+
+    def enter_file(_)
+      self.file_count += 1
     end
 
     def exit_file(path, _)
