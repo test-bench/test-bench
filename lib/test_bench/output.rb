@@ -41,6 +41,21 @@ module TestBench
     end
     attr_writer :error_count
 
+    def failure_count
+      @failure_count ||= 0
+    end
+    attr_writer :failure_count
+
+    def pass_count
+      @pass_count ||= 0
+    end
+    attr_writer :pass_count
+
+    def test_count
+      @test_count ||= 0
+    end
+    attr_writer :test_count
+
     def file_error_counter
       @file_error_counter ||= 0
     end
@@ -98,7 +113,15 @@ module TestBench
       print_error_details unless error_details.nil?
     end
 
-    def finish_test(_, _)
+    def finish_test(_, result)
+      self.test_count += 1
+
+      if result
+        self.pass_count += 1
+      else
+        self.failure_count += 1
+      end
+
       print_previous_error(true) unless previous_error.nil?
 
       print_error_details unless error_details.nil?
