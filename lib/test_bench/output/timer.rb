@@ -5,6 +5,14 @@ module TestBench
 
       attr_accessor :start_time
 
+      def self.configure(receiver, attr_name: nil)
+        attr_name ||= :timer
+
+        instance = new
+        receiver.public_send(:"#{attr_name}=", instance)
+        instance
+      end
+
       def start(now=nil)
         now ||= ::Time.now.utc
 
