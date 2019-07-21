@@ -36,6 +36,11 @@ module TestBench
     end
     attr_writer :verbose
 
+    def error_count
+      @error_count ||= 0
+    end
+    attr_writer :error_count
+
     def file_error_counter
       @file_error_counter ||= 0
     end
@@ -134,6 +139,8 @@ module TestBench
     end
 
     def error(error)
+      self.error_count += 1
+
       self.file_error_counter += 1
 
       self.previous_error = error
