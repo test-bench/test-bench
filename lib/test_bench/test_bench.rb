@@ -24,4 +24,13 @@ module TestBench
     receiver.test_run = run
     receiver
   end
+
+  def self.evaluate(run: nil, &block)
+    run ||= self.run
+
+    run.evaluate(->{
+      fixture = Run.fixture(run)
+      fixture.instance_exec(&block)
+    })
+  end
 end
