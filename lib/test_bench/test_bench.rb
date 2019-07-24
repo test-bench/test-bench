@@ -25,6 +25,12 @@ module TestBench
   end
   singleton_class.alias_method :output=, :set_output
 
+  def self.activate(receiver=nil, session: nil)
+    receiver ||= TOPLEVEL_BINDING.receiver
+
+    fixture(session, receiver: receiver)
+  end
+
   def self.fixture(session=nil, receiver: nil)
     session ||= self.session
     receiver ||= Object.new
