@@ -15,4 +15,13 @@ module TestBench
   def self.output=(output)
     run.output = output
   end
+
+  def self.activate(receiver=nil, run: nil)
+    receiver ||= TOPLEVEL_BINDING.receiver
+    run ||= self.run
+
+    receiver.extend(Fixture)
+    receiver.test_run = run
+    receiver
+  end
 end
