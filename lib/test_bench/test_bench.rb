@@ -29,6 +29,14 @@ module TestBench
     fixture(session, receiver: receiver)
   end
 
+  def self.evaluate(session: nil, &block)
+    fixture = fixture(session)
+
+    fixture.test_session.evaluate(->{
+      fixture.instance_exec(&block)
+    })
+  end
+
   def self.fixture(session=nil, receiver: nil)
     session ||= self.session
     receiver ||= Object.new
