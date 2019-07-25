@@ -85,6 +85,14 @@ module TestBench
             output.omit_backtrace_pattern = pattern
           end
 
+          parser.on('-s', '--output-styling [on|off|detect]', %{Render output coloring and font styling escape codes (Default: #{writer.styling || Output::Writer::Defaults.styling_setting})}) do |styling_text|
+            styling_text ||= 'on'
+
+            styling = styling_text.to_sym
+
+            Output::Writer.configure(output, styling: styling)
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -95,6 +103,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
           #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
           #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
+          #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
 
           TEXT
         end
