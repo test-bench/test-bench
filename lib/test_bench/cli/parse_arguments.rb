@@ -95,6 +95,10 @@ module TestBench
             end
           end
 
+          parser.on('-r', '--[no-]reverse-backtraces', %{Reverse order of backtraces when printing errors (Default: #{Output::Defaults.reverse_backtraces})}) do |reverse_backtraces|
+            output.reverse_backtraces = reverse_backtraces
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -105,6 +109,8 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
           #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
           #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
+          #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
+          #{parser.summary_indent}TEST_BENCH_REVERSE_BACKTRACES      Same as -r or --reverse-backtraces
 
           TEXT
         end
