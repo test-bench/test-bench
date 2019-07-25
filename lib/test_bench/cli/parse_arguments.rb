@@ -85,6 +85,14 @@ module TestBench
             output.omit_backtrace_pattern = pattern
           end
 
+          parser.on('-s', '--output-styling [on|off|detect]', %{Render output coloring and font styling escape codes (Default: #{writer.styling})}) do |styling_text|
+            styling_text ||= 'on'
+
+            styling = styling_text.to_sym
+
+            Output::Writer.configure(output, styling: styling)
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
