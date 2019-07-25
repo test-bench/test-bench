@@ -54,10 +54,23 @@ module TestBench
             exit(true)
           end
 
+          parser.separator('')
+          parser.separator("Configuration Options")
+
+          parser.on('-a', '--[no-]abort-on-error', %{Exit immediately after any test failure or error (Default: #{TestBench::Run::Defaults.abort_on_error})}) do |abort_on_error|
+            policy = TestBench::Run.error_policy(abort_on_error)
+
+            TestBench::Fixture::ErrorPolicy.configure(test_run, policy: policy)
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
           If no paths are given, a default path (#{Run::Defaults.tests_directory}) is scanned for test files.
+
+          The following environment variables can also control execution:
+
+          #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
 
           TEXT
         end
