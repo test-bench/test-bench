@@ -105,6 +105,10 @@ module TestBench
             run.tests_directory = path
           end
 
+          parser.on('-v', '--[no-]verbose', %{Increases output verbosity (Default: #{output.verbose})}) do |verbose|
+            output.verbose = verbose
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -118,6 +122,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
           #{parser.summary_indent}TEST_BENCH_REVERSE_BACKTRACES      Same as -r or --reverse-backtraces
           #{parser.summary_indent}TEST_BENCH_TESTS_DIRECTORY         Same as -d or --tests-directory
+          #{parser.summary_indent}TEST_BENCH_VERBOSE                 Same as -v or --verbose
 
           TEXT
         end
