@@ -97,6 +97,14 @@ module TestBench
             output.reverse_backtraces = reverse_backtraces
           end
 
+          parser.on('-d', '--tests-directory DIR', %{Directory to scan for test files when none are specified (Default: #{run.tests_directory.inspect})}) do |path|
+            unless File.directory?(path)
+              raise Error, "Path is not a directory (Path: #{path.inspect})"
+            end
+
+            run.tests_directory = path
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -109,6 +117,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
           #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
           #{parser.summary_indent}TEST_BENCH_REVERSE_BACKTRACES      Same as -r or --reverse-backtraces
+          #{parser.summary_indent}TEST_BENCH_TESTS_DIRECTORY         Same as -d or --tests-directory
 
           TEXT
         end
