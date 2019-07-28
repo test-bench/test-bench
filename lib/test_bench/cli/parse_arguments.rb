@@ -46,6 +46,14 @@ module TestBench
             exit(true)
           end
 
+          parser.on('-V', '--version', "Print version and exit successfully") do
+            output_device.puts <<~TEXT
+            test-bench (#{self.class.program_name}) version #{self.class.version}
+            TEXT
+
+            exit(true)
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -57,6 +65,14 @@ module TestBench
 
       def self.program_name
         $PROGRAM_NAME
+      end
+
+      def self.version
+        if defined?(Gem)
+          spec = Gem.loaded_specs['test_bench']
+        end
+
+        spec&.version || '(unknown)'
       end
     end
   end
