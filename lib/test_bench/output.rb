@@ -51,6 +51,11 @@ module TestBench
     end
     attr_writer :pass_count
 
+    def skip_count
+      @skip_count ||= 0
+    end
+    attr_writer :skip_count
+
     def test_count
       @test_count ||= 0
     end
@@ -125,6 +130,10 @@ module TestBench
       print_previous_error(true) unless previous_error.nil?
 
       print_error_details unless error_details.nil?
+    end
+
+    def skip_test(_)
+      self.skip_count += 1
     end
 
     def enter_assert_block
