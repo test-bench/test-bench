@@ -23,6 +23,23 @@ module TestBench
       end
       attr_writer :path_counter
 
+      def self.build(tests_directory=nil, test_run: nil)
+        test_run ||= TestBench.run
+
+        instance = new
+        instance.tests_directory = tests_directory unless tests_directory.nil?
+        instance.test_run = test_run
+        instance
+      end
+
+      def self.configure(receiver, tests_directory=nil, attr_name: nil, **arguments)
+        attr_name ||= :run
+
+        instance = build(tests_directory, **arguments)
+        receiver.public_send(:"#{attr_name}=", instance)
+        instance
+      end
+
       def call(&block)
         test_run.start
 
