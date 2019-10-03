@@ -55,6 +55,24 @@ module TestBench
         self
       end
 
+      def escape_code(id)
+        escape_code = SGR.escape_code(id)
+
+        if mode == Mode.text
+          return self unless styling?
+
+          self.mode = Mode.escape_sequence
+
+          write("\e[")
+        else
+          write(';')
+        end
+
+        write(escape_code)
+
+        self
+      end
+
       def write(data)
         bytes_written = device.write(data)
 
