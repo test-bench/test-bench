@@ -16,6 +16,16 @@ module TestBench
       attr_writer :styling_enabled
       alias_method :styling?, :styling_enabled
 
+      def mode
+        @mode ||= Mode.text
+      end
+      attr_writer :mode
+
+      def byte_offset
+        @byte_offset ||= 0
+      end
+      attr_writer :byte_offset
+
       def configure(device: nil, styling: nil)
         device ||= Defaults.device
 
@@ -31,6 +41,24 @@ module TestBench
         instance = new
         instance.configure(device: device, styling: styling)
         instance
+      end
+
+      def text(text)
+        if mode == Mode.escape_sequence
+          self.mode = Mode.text
+
+          write('m')
+        end
+
+        write(text)
+
+        self
+      end
+
+      def write(data)
+        bytes_written = device.write(data)
+
+        self.byte_offset += bytes_written
       end
 
       def self.styling?(device, styling_setting=nil)
@@ -64,6 +92,16 @@ module TestBench
 
       def self.default_styling_setting
         styling_settings.fetch(0)
+      end
+
+      module Mode
+        def self.text
+          :text
+        end
+
+        def self.escape_sequence
+          :escape_sequence
+        end
       end
 
       module Defaults
