@@ -15,3 +15,5 @@ require 'test_bench/controls/pattern'
 require 'test_bench/controls/result'
 require 'test_bench/controls/test_file'
 require 'test_bench/controls/time'
+
+require 'test_bench/controls/output/styling'
