@@ -101,6 +101,10 @@ module TestBench
         self.byte_offset += bytes_written
       end
 
+      def current?(byte_offset)
+        byte_offset >= self.byte_offset
+      end
+
       def increase_indentation
         self.indentation_depth += 1
       end
