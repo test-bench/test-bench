@@ -75,6 +75,10 @@ module TestBench
         self
       end
 
+      def sync
+        text('')
+      end
+
       def write(data)
         bytes_written = device.write(data)
 
