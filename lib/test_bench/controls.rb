@@ -15,4 +15,5 @@ require 'test_bench/controls/test_file'
 require 'test_bench/controls/time'
 
 require 'test_bench/controls/output/escape_code'
+require 'test_bench/controls/output/newline_character'
 require 'test_bench/controls/output/styling'
