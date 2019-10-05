@@ -14,3 +14,4 @@ require 'test_bench/controls/result'
 require 'test_bench/controls/time'
 
 require 'test_bench/controls/output/escape_code'
+require 'test_bench/controls/output/newline_character'
