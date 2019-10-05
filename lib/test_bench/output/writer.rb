@@ -26,6 +26,11 @@ module TestBench
       end
       attr_writer :byte_offset
 
+      def indentation_depth
+        @indentation_depth ||= 0
+      end
+      attr_writer :indentation_depth
+
       def configure(device: nil, styling: nil)
         device ||= Defaults.device
 
@@ -77,10 +82,24 @@ module TestBench
         text('')
       end
 
+      def indent
+        indentation = '  ' * indentation_depth
+
+        text(indentation)
+      end
+
       def write(data)
         bytes_written = device.write(data)
 
         self.byte_offset += bytes_written
+      end
+
+      def increase_indentation
+        self.indentation_depth += 1
+      end
+
+      def decrease_indentation
+        self.indentation_depth -= 1
       end
 
       def self.styling?(device, styling_setting=nil)
