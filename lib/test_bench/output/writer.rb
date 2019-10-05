@@ -90,6 +90,13 @@ module TestBench
         text(indentation)
       end
 
+      def newline
+        sync
+        device.puts('')
+        self.byte_offset += 1
+        self
+      end
+
       def write(data)
         bytes_written = device.write(data)
 
