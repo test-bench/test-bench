@@ -117,6 +117,19 @@ module TestBench
         self.device = capture_device
       end
 
+      def stop_capture
+        if previous_device.nil?
+          raise Error, "Not yet capturing (Device: #{device.inspect})"
+        end
+
+        string = device.string
+
+        self.device = previous_device
+        self.previous_device = nil
+
+        string
+      end
+
       def capturing?
         !previous_device.nil?
       end
