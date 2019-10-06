@@ -18,6 +18,8 @@ module TestBench
       attr_writer :styling_enabled
       alias_method :styling?, :styling_enabled
 
+      attr_accessor :previous_device
+
       def mode
         @mode ||= Mode.text
       end
@@ -101,6 +103,22 @@ module TestBench
         bytes_written = device.write(data)
 
         self.byte_offset += bytes_written
+      end
+
+      def start_capture(str=nil)
+        str ||= String.new
+
+        unless previous_device.nil?
+          raise Error, "Already capturing (Capture String: #{device.string.inspect}, Previous Device: #{previous_device.inspect})"
+        end
+        self.previous_device = self.device
+
+        capture_device = StringIO.new(str)
+        self.device = capture_device
+      end
+
+      def capturing?
+        !previous_device.nil?
       end
 
       def current?(byte_offset)
