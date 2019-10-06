@@ -3,7 +3,9 @@ module TestBench
     class Writer
       module Substitute
         def self.build
-          Writer.new
+          writer = Writer.new
+          writer.styling_enabled = false
+          writer
         end
 
         class Writer < Writer
@@ -24,6 +26,10 @@ module TestBench
             else
               pattern
             end
+          end
+
+          def enable_styling!
+            self.styling_enabled = true
           end
         end
       end
