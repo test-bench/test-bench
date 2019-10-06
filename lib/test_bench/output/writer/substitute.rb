@@ -7,6 +7,10 @@ module TestBench
         end
 
         class Writer < Writer
+          def capturing?
+            !previous_device.nil?
+          end
+
           def written?(pattern=nil)
             pattern = self.pattern(pattern)
 
