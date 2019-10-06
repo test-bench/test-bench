@@ -8,6 +8,8 @@ module TestBench
       end
       attr_writer :device
 
+      attr_accessor :previous_device
+
       def styling
         @styling ||= false
       end
@@ -93,6 +95,18 @@ module TestBench
         bytes_written = device.write(data)
 
         self.byte_offset += bytes_written
+      end
+
+      def start_capture(str=nil)
+        str ||= String.new
+
+        unless previous_device.nil?
+          raise Error, "Already capturing (Capture String: #{device.string.inspect}, Previous Device: #{previous_device.inspect})"
+        end
+        self.previous_device = self.device
+
+        capture_device = StringIO.new(str)
+        self.device = capture_device
       end
 
       def current?(byte_offset)
