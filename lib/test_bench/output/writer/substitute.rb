@@ -30,6 +30,12 @@ module TestBench
             end
           end
 
+          def set_capture(str)
+            start_capture
+
+            text(str)
+          end
+
           def enable_styling!
             self.styling_enabled = true
           end
