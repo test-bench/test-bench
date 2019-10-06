@@ -25,6 +25,10 @@ module TestBench
               pattern
             end
           end
+
+          def enable_styling!
+            self.styling = true
+          end
         end
       end
     end
