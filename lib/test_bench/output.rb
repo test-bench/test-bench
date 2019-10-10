@@ -87,6 +87,21 @@ module TestBench
 
     attr_accessor :previous_byte_offset
 
+    def self.build(device=nil, styling: nil)
+      instance = new
+      Writer.configure(instance, device, styling: styling)
+      Timer.configure(instance)
+      instance
+    end
+
+    def self.configure(receiver, device=nil, styling: nil, attr_name: nil)
+      attr_name ||= :output
+
+      instance = build(device, styling: styling)
+      receiver.public_send(:"#{attr_name}=", instance)
+      instance
+    end
+
     def start_run
       timer.start
     end
