@@ -31,6 +31,11 @@ module TestBench
     end
     attr_writer :verbose
 
+    def file_error_counter
+      @file_error_counter ||= 0
+    end
+    attr_writer :file_error_counter
+
     attr_accessor :error_details
 
     def exit_file(_, _)
@@ -71,6 +76,10 @@ module TestBench
       2.times do
         writer.decrease_indentation
       end
+    end
+
+    def error(error)
+      self.file_error_counter += 1
     end
 
     def print_error(error)
