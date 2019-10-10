@@ -19,6 +19,30 @@ module TestBench
     end
     attr_writer :reverse_backtraces
 
+    def assert_block_depth
+      @assert_block_depth ||= 0
+    end
+    attr_writer :assert_block_depth
+
+    def verbose
+      instance_variable_defined?(:@verbose) ?
+        @verbose :
+        @verbose = Defaults.verbose
+    end
+    attr_writer :verbose
+
+    def enter_assert_block
+      self.assert_block_depth += 1
+
+      return if verbose || assert_block_depth > 1
+
+      writer.start_capture
+
+      2.times do
+        writer.increase_indentation
+      end
+    end
+
     def print_error(error)
       writer.escape_code(:red)
 
@@ -140,6 +164,10 @@ module TestBench
 
       def self.reverse_backtraces
         Environment::Boolean.fetch('TEST_BENCH_REVERSE_BACKTRACES', false)
+      end
+
+      def self.verbose
+        Environment::Boolean.fetch('TEST_BENCH_VERBOSE', false)
       end
     end
   end
