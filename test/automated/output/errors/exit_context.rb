@@ -16,9 +16,9 @@ context "Output" do
 
       test "Prints error, indented" do
         control_text = <<~TEXT
-            #{error.backtrace[0]}: #{error.message} (#{error.class.name})
-        \t    from #{error.backtrace[1]}
-        \t    from #{error.backtrace[2]}
+          #{error.backtrace[0]}: #{error.message} (#{error.class.name})
+        \t  from #{error.backtrace[1]}
+        \t  from #{error.backtrace[2]}
         TEXT
 
         pattern = Regexp.new(Regexp.escape(control_text))
