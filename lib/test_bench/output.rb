@@ -31,10 +31,47 @@ module TestBench
     end
     attr_writer :verbose
 
+    def file_error_counter
+      @file_error_counter ||= 0
+    end
+    attr_writer :file_error_counter
+
+    def errors_by_file
+      @errors_by_file ||= {}
+    end
+    attr_writer :errors_by_file
+
     attr_accessor :error_details
 
-    def exit_file(_, _)
+    def finish_run(_)
+      unless errors_by_file.empty?
+        writer
+          .escape_code(:bold)
+          .escape_code(:red)
+          .text('Error Summary:')
+          .escape_code(:reset_intensity)
+          .escape_code(:reset_fg)
+          .newline
+
+        errors_by_file.each do |path, errors|
+          writer
+            .text(errors.to_s.rjust(4, ' '))
+            .text(": #{path}")
+            .newline
+        end
+
+        writer.newline
+      end
+    end
+
+    def exit_file(path, _)
       print_error_details unless error_details.nil?
+
+      if file_error_counter.nonzero?
+        errors_by_file[path] = file_error_counter
+
+        self.file_error_counter = 0
+      end
     end
 
     def exit_context(_, _)
@@ -71,6 +108,10 @@ module TestBench
       2.times do
         writer.decrease_indentation
       end
+    end
+
+    def error(error)
+      self.file_error_counter += 1
     end
 
     def print_error(error)
