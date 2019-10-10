@@ -66,6 +66,11 @@ module TestBench
     end
     attr_writer :test_count
 
+    def previous_byte_offset
+      @previous_byte_offset ||= 0
+    end
+    attr_writer :previous_byte_offset
+
     def file_error_counter
       @file_error_counter ||= 0
     end
@@ -79,6 +84,8 @@ module TestBench
     attr_accessor :error_details
 
     attr_accessor :previous_error
+
+    attr_accessor :previous_byte_offset
 
     def start_run
       timer.start
@@ -175,7 +182,13 @@ module TestBench
       end
     end
 
-    def enter_file(_)
+    def enter_file(path)
+      writer
+        .text("Running #{path}")
+        .newline
+
+      self.previous_byte_offset = writer.byte_offset
+
       self.file_count += 1
     end
 
@@ -189,6 +202,17 @@ module TestBench
 
         self.file_error_counter = 0
       end
+
+      if writer.current?(previous_byte_offset.to_i)
+        writer
+          .escape_code(:faint)
+          .text("(Nothing written)")
+          .escape_code(:reset_intensity)
+          .newline
+          .newline
+      end
+
+      self.previous_byte_offset = nil
     end
 
     def exit_context(_, _)
