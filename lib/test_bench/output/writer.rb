@@ -44,6 +44,14 @@ module TestBench
         instance
       end
 
+      def self.configure(receiver, device=nil, styling: nil, attr_name: nil)
+        attr_name ||= :writer
+
+        instance = build(device, styling: styling)
+        receiver.public_send(:"#{attr_name}=", instance)
+        instance
+      end
+
       def text(text)
         if mode == Mode.escape_sequence
           self.mode = Mode.text
