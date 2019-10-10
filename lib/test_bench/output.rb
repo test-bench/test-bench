@@ -43,6 +43,27 @@ module TestBench
 
     attr_accessor :error_details
 
+    def finish_run(_)
+      unless errors_by_file.empty?
+        writer
+          .escape_code(:bold)
+          .escape_code(:red)
+          .text('Error Summary:')
+          .escape_code(:reset_intensity)
+          .escape_code(:reset_fg)
+          .newline
+
+        errors_by_file.each do |path, errors|
+          writer
+            .text(errors.to_s.rjust(4, ' '))
+            .text(": #{path}")
+            .newline
+        end
+
+        writer.newline
+      end
+    end
+
     def exit_file(path, _)
       print_error_details unless error_details.nil?
 
