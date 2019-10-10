@@ -290,8 +290,17 @@ module TestBench
       print_error_details unless error_details.nil?
     end
 
-    def skip_test(_)
+    def skip_test(title)
+      title ||= Defaults.test_title
+
       self.skip_count += 1
+
+      writer
+        .indent
+        .escape_code(:yellow)
+        .text(title)
+        .escape_code(:reset_fg)
+        .newline
     end
 
     def enter_assert_block(_)
