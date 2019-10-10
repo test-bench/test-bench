@@ -77,6 +77,8 @@ module TestBench
     end
 
     def exit_context(_, _)
+      print_previous_error(true) unless previous_error.nil?
+
       print_error_details unless error_details.nil?
     end
 
