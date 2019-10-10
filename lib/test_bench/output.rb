@@ -36,10 +36,21 @@ module TestBench
     end
     attr_writer :file_error_counter
 
+    def errors_by_file
+      @errors_by_file ||= {}
+    end
+    attr_writer :errors_by_file
+
     attr_accessor :error_details
 
-    def exit_file(_, _)
+    def exit_file(path, _)
       print_error_details unless error_details.nil?
+
+      if file_error_counter.nonzero?
+        errors_by_file[path] = file_error_counter
+
+        self.file_error_counter = 0
+      end
     end
 
     def exit_context(_, _)
