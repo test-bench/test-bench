@@ -33,6 +33,10 @@ module TestBench
 
     attr_accessor :error_details
 
+    def exit_context(_, _)
+      print_error_details unless error_details.nil?
+    end
+
     def finish_test(_, _)
       print_error_details unless error_details.nil?
     end
