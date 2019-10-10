@@ -43,6 +43,8 @@ module TestBench
 
     attr_accessor :error_details
 
+    attr_accessor :previous_error
+
     def finish_run(_)
       unless errors_by_file.empty?
         writer
@@ -112,6 +114,8 @@ module TestBench
 
     def error(error)
       self.file_error_counter += 1
+
+      self.previous_error = error
     end
 
     def print_error(error)
