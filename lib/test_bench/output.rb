@@ -81,6 +81,8 @@ module TestBench
     end
 
     def finish_test(_, _)
+      print_previous_error(true) unless previous_error.nil?
+
       print_error_details unless error_details.nil?
     end
 
