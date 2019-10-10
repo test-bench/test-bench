@@ -238,6 +238,17 @@ module TestBench
       writer.newline if writer.indentation_depth.zero?
     end
 
+    def skip_context(title)
+      return if title.nil?
+
+      writer
+        .indent
+        .escape_code(:yellow)
+        .text(title)
+        .escape_code(:reset_fg)
+        .newline
+    end
+
     def comment(text)
       writer
         .indent
