@@ -228,10 +228,14 @@ module TestBench
       writer.increase_indentation
     end
 
-    def exit_context(_, _)
+    def exit_context(title, _)
+      writer.decrease_indentation unless title.nil?
+
       print_previous_error(true) unless previous_error.nil?
 
       print_error_details unless error_details.nil?
+
+      writer.newline if writer.indentation_depth.zero?
     end
 
     def comment(text)
