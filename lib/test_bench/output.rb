@@ -256,13 +256,37 @@ module TestBench
         .newline
     end
 
-    def finish_test(_, result)
+    def finish_test(title, result)
       self.test_count += 1
 
       if result
         self.pass_count += 1
       else
         self.failure_count += 1
+      end
+
+      unless title.nil? && result
+        title ||= Defaults.test_title
+
+        writer.indent
+
+        if result
+          writer.escape_code(:green)
+        else
+          writer
+            .escape_code(:bold)
+            .escape_code(:red)
+        end
+
+        writer
+          .text(title)
+          .escape_code(:reset_fg)
+
+        unless result
+          writer.escape_code(:reset_intensity)
+        end
+
+        writer.newline
       end
 
       print_previous_error(true) unless previous_error.nil?
@@ -463,6 +487,10 @@ module TestBench
 
       def self.reverse_backtraces
         Environment::Boolean.fetch('TEST_BENCH_REVERSE_BACKTRACES', false)
+      end
+
+      def self.test_title
+        'Test'
       end
 
       def self.verbose
