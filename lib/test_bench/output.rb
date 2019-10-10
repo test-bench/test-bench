@@ -67,6 +67,8 @@ module TestBench
     end
 
     def exit_file(path, _)
+      print_previous_error(false) unless previous_error.nil?
+
       print_error_details unless error_details.nil?
 
       if file_error_counter.nonzero?
