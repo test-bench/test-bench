@@ -31,6 +31,8 @@ module TestBench
     end
     attr_writer :verbose
 
+    attr_accessor :error_details
+
     def enter_assert_block
       self.assert_block_depth += 1
 
@@ -40,6 +42,22 @@ module TestBench
 
       2.times do
         writer.increase_indentation
+      end
+    end
+
+    def exit_assert_block(result)
+      self.assert_block_depth -= 1
+
+      return if verbose || assert_block_depth.nonzero?
+
+      captured_text = writer.stop_capture
+
+      unless result
+        self.error_details = captured_text
+      end
+
+      2.times do
+        writer.decrease_indentation
       end
     end
 
