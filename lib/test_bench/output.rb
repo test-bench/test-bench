@@ -215,6 +215,19 @@ module TestBench
       self.previous_byte_offset = nil
     end
 
+    def enter_context(title)
+      return if title.nil?
+
+      writer
+        .indent
+        .escape_code(:green)
+        .text(title)
+        .escape_code(:reset_fg)
+        .newline
+
+      writer.increase_indentation
+    end
+
     def exit_context(_, _)
       print_previous_error(true) unless previous_error.nil?
 
