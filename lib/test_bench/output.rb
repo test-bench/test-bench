@@ -33,6 +33,10 @@ module TestBench
 
     attr_accessor :error_details
 
+    def finish_test(_, _)
+      print_error_details unless error_details.nil?
+    end
+
     def enter_assert_block
       self.assert_block_depth += 1
 
@@ -169,6 +173,12 @@ module TestBench
 
         writer.newline
       end
+    end
+
+    def print_error_details
+      writer.text(error_details)
+
+      self.error_details = nil
     end
 
     module Defaults
