@@ -35,7 +35,7 @@ module TestBench
       end
       attr_writer :indentation_depth
 
-      def configure(device: nil, styling: nil)
+      def configure(styling: nil, device: nil)
         device ||= Defaults.device
 
         unless styling.nil?
@@ -49,6 +49,20 @@ module TestBench
       def self.build(device=nil, styling: nil)
         instance = new
         instance.configure(device: device, styling: styling)
+        instance
+      end
+
+      def self.configure(receiver, writer: nil, styling: nil, device: nil, attr_name: nil)
+        attr_name ||= :writer
+
+        if writer.nil?
+          instance = build(device, styling: styling)
+        else
+          instance = writer
+        end
+
+        receiver.public_send(:"#{attr_name}=", instance)
+
         instance
       end
 
