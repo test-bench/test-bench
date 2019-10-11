@@ -3,3 +3,5 @@ unless RUBY_ENGINE == 'mruby'
 end
 
 require 'test_bench/fixture'
+
+require 'test_bench/environment/boolean'
