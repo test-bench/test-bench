@@ -26,6 +26,8 @@ module TestBench
           directory(path)
         elsif File.exist?(path)
           file(path)
+        else
+          raise Error, "Path not found (Path: #{path.inspect})"
         end
       end
       alias_method :<<, :path
