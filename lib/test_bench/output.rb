@@ -19,6 +19,60 @@ module TestBench
     end
     attr_writer :reverse_backtraces
 
+    def assert_block_depth
+      @assert_block_depth ||= 0
+    end
+    attr_writer :assert_block_depth
+
+    def verbose
+      instance_variable_defined?(:@verbose) ?
+        @verbose :
+        @verbose = Defaults.verbose
+    end
+    attr_writer :verbose
+
+    attr_accessor :error_details
+
+    def exit_file(_, _)
+      print_error_details unless error_details.nil?
+    end
+
+    def exit_context(_, _)
+      print_error_details unless error_details.nil?
+    end
+
+    def finish_test(_, _)
+      print_error_details unless error_details.nil?
+    end
+
+    def enter_assert_block
+      self.assert_block_depth += 1
+
+      return if verbose || assert_block_depth > 1
+
+      writer.start_capture
+
+      2.times do
+        writer.increase_indentation
+      end
+    end
+
+    def exit_assert_block(result)
+      self.assert_block_depth -= 1
+
+      return if verbose || assert_block_depth.nonzero?
+
+      captured_text = writer.stop_capture
+
+      unless result
+        self.error_details = captured_text
+      end
+
+      2.times do
+        writer.decrease_indentation
+      end
+    end
+
     def print_error(error)
       writer.escape_code(:red)
 
@@ -129,6 +183,12 @@ module TestBench
       end
     end
 
+    def print_error_details
+      writer.text(error_details)
+
+      self.error_details = nil
+    end
+
     module Defaults
       def self.omit_backtrace_pattern
         pattern = ENV.fetch('TEST_BENCH_OMIT_BACKTRACE_PATTERN') do
@@ -140,6 +200,10 @@ module TestBench
 
       def self.reverse_backtraces
         Environment::Boolean.fetch('TEST_BENCH_REVERSE_BACKTRACES', false)
+      end
+
+      def self.verbose
+        Environment::Boolean.fetch('TEST_BENCH_VERBOSE', false)
       end
     end
   end
