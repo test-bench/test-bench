@@ -7,6 +7,11 @@ module TestBench
     end
     attr_writer :writer
 
+    def timer
+      @timer ||= Timer::Substitute.build
+    end
+    attr_writer :timer
+
     def omit_backtrace_pattern
       @omit_backtrace_pattern ||= Defaults.omit_backtrace_pattern
     end
@@ -31,6 +36,36 @@ module TestBench
     end
     attr_writer :verbose
 
+    def error_count
+      @error_count ||= 0
+    end
+    attr_writer :error_count
+
+    def failure_count
+      @failure_count ||= 0
+    end
+    attr_writer :failure_count
+
+    def file_count
+      @file_count ||= 0
+    end
+    attr_writer :file_count
+
+    def pass_count
+      @pass_count ||= 0
+    end
+    attr_writer :pass_count
+
+    def skip_count
+      @skip_count ||= 0
+    end
+    attr_writer :skip_count
+
+    def test_count
+      @test_count ||= 0
+    end
+    attr_writer :test_count
+
     def file_error_counter
       @file_error_counter ||= 0
     end
@@ -45,7 +80,11 @@ module TestBench
 
     attr_accessor :previous_error
 
-    def finish_run(_)
+    def start_run
+      timer.start
+    end
+
+    def finish_run(result)
       unless errors_by_file.empty?
         writer
           .escape_code(:bold)
@@ -64,6 +103,80 @@ module TestBench
 
         writer.newline
       end
+
+      return unless timer.running?
+
+      elapsed_time = timer.stop
+
+      failed = !result
+
+      if elapsed_time.nonzero?
+        tests_per_second = test_count / elapsed_time
+      end
+
+      if failed
+        writer.escape_code(:red)
+      end
+
+      writer
+        .text("Finished running #{numeric_label(file_count, 'file')}")
+        .newline
+        .text("Ran %s in %.3fs (%.1f tests/second)" % [
+          numeric_label(test_count, 'test'),
+          elapsed_time,
+          tests_per_second || 0])
+        .newline
+
+      if pass_count.nonzero? && !failed
+        writer
+          .escape_code(:green)
+          .text("#{pass_count} passed")
+          .escape_code(:reset_fg)
+      else
+        writer.text("#{pass_count} passed")
+      end
+
+      writer.text(", ")
+
+      if skip_count.nonzero? && !failed
+        writer
+          .escape_code(:yellow)
+          .text("#{skip_count} skipped")
+          .escape_code(:reset_fg)
+      else
+        writer.text("#{skip_count} skipped")
+      end
+
+      writer.text(", ")
+
+      if failure_count.nonzero?
+        writer
+          .escape_code(:bold)
+          .text("#{failure_count} failed")
+          .escape_code(:reset_intensity)
+      else
+        writer.text("0 failed")
+      end
+
+      writer.text(", ")
+
+      if failed
+        writer
+          .escape_code(:bold)
+          .text(numeric_label(error_count, 'total error'))
+          .escape_code(:reset_intensity)
+          .escape_code(:reset_fg)
+      else
+        writer.text("0 total errors")
+      end
+
+      2.times do
+        writer.newline
+      end
+    end
+
+    def enter_file(_)
+      self.file_count += 1
     end
 
     def exit_file(path, _)
@@ -84,10 +197,22 @@ module TestBench
       print_error_details unless error_details.nil?
     end
 
-    def finish_test(_, _)
+    def finish_test(_, result)
+      self.test_count += 1
+
+      if result
+        self.pass_count += 1
+      else
+        self.failure_count += 1
+      end
+
       print_previous_error(true) unless previous_error.nil?
 
       print_error_details unless error_details.nil?
+    end
+
+    def skip_test(_)
+      self.skip_count += 1
     end
 
     def enter_assert_block
@@ -121,6 +246,8 @@ module TestBench
     end
 
     def error(error)
+      self.error_count += 1
+
       self.file_error_counter += 1
 
       self.previous_error = error
@@ -250,6 +377,16 @@ module TestBench
       writer.text(error_details)
 
       self.error_details = nil
+    end
+
+    def numeric_label(number, label, plural_text=nil)
+      plural_text ||= 's'
+
+      if number == 1
+        "#{number} #{label}"
+      else
+        "#{number} #{label}#{plural_text}"
+      end
     end
 
     module Defaults
