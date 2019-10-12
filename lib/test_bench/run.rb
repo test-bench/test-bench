@@ -13,6 +13,12 @@ module TestBench
       output.start_run
     end
 
+    def finish
+      result = !failed?
+
+      output.finish_run(result)
+    end
+
     def load(path)
       output.enter_file(path)
 
