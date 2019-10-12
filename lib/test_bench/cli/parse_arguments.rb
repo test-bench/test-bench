@@ -31,6 +31,22 @@ module TestBench
         @argv = argv
       end
 
+      def self.build(argv=nil, run: nil, output_device: nil)
+        argv ||= ARGV
+
+        argv = Array(argv)
+
+        instance = new(argv)
+        instance.run = run unless run.nil?
+        instance.output_device = output_device unless output_device.nil?
+        instance
+      end
+
+      def self.call(argv, run: nil, output_device: nil)
+        instance = build(argv, run: run, output_device: output_device)
+        instance.()
+      end
+
       def call
         option_parser.parse(argv)
       end
