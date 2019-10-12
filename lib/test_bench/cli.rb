@@ -15,6 +15,24 @@ module TestBench
     end
     attr_writer :stdin
 
+    def self.build(argv=nil, stdin: nil, test_run: nil)
+      stdin ||= $stdin
+
+      instance = new
+      instance.stdin = $stdin
+
+      run = Run.configure(instance, test_run: test_run)
+
+      instance.argv = ParseArguments.(argv, run: run)
+
+      instance
+    end
+
+    def self.call(argv=nil, **args)
+      instance = build(argv, **args)
+      instance.()
+    end
+
     def call
       run.() do |paths|
         unless stdin.tty?
