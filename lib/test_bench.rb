@@ -15,3 +15,4 @@ require 'test_bench/output'
 require 'test_bench/output/substitute'
 
 require 'test_bench/run'
+require 'test_bench/run/substitute'
