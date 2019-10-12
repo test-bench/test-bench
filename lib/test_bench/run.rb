@@ -11,7 +11,9 @@ module TestBench
 
     attr_accessor :abort_on_error
 
-    def self.build(output: nil, abort_on_error: nil)
+    def self.build(output: nil, load_context: nil, abort_on_error: nil)
+      load_context ||= TOPLEVEL_BINDING.receiver
+
       instance = new
 
       if output.nil?
@@ -25,6 +27,16 @@ module TestBench
       error_policy = error_policy(abort_on_error)
       Fixture::ErrorPolicy.configure(instance, policy: error_policy)
 
+      instance.load_context = load_context
+
+      instance
+    end
+
+    def self.configure(receiver, attr_name: nil, **args)
+      attr_name ||= :test_run
+
+      instance = build(**args)
+      receiver.public_send(:"#{attr_name}=", instance)
       instance
     end
 
