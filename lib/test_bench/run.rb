@@ -9,8 +9,14 @@ module TestBench
     end
     attr_writer :load_context
 
-    def self.build(abort_on_error: nil)
+    def self.build(output: nil, abort_on_error: nil)
       instance = new
+
+      if output.nil?
+        Output.configure(instance)
+      else
+        instance.output = output
+      end
 
       error_policy = error_policy(abort_on_error)
       Fixture::ErrorPolicy.configure(instance, policy: error_policy)
