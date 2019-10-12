@@ -10,6 +10,14 @@ module TestBench
           @output ||= Output::Substitute.build
         end
 
+        def start
+          output.start_run
+        end
+
+        def started?
+          output.recorded_once?(:start_run)
+        end
+
         def load(path)
           output.enter_file(path)
         end
