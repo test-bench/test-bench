@@ -9,6 +9,10 @@ module TestBench
     end
     attr_writer :load_context
 
+    def start
+      output.start_run
+    end
+
     def load(path)
       output.enter_file(path)
 
