@@ -18,6 +18,22 @@ module TestBench
           output.recorded_once?(:start_run)
         end
 
+        def finish
+          result = !failed?
+
+          output.finish_run(result)
+        end
+
+        def finished?(result=nil)
+          if result.nil?
+            output.recorded_once?(:finish_run)
+          else
+            output.recorded_once?(:finish_run) do |r|
+              r == result
+            end
+          end
+        end
+
         def load(path)
           output.enter_file(path)
         end
