@@ -11,8 +11,14 @@ module TestBench
 
     attr_accessor :abort_on_error
 
-    def self.build(abort_on_error: nil)
+    def self.build(output: nil, abort_on_error: nil)
       instance = new
+
+      if output.nil?
+        Output.configure(instance)
+      else
+        instance.output = output
+      end
 
       instance.abort_on_error = abort_on_error unless abort_on_error.nil?
 
