@@ -9,6 +9,25 @@ module TestBench
     end
     attr_writer :load_context
 
+    def self.build(abort_on_error: nil)
+      instance = new
+
+      error_policy = error_policy(abort_on_error)
+      Fixture::ErrorPolicy.configure(instance, policy: error_policy)
+
+      instance
+    end
+
+    def self.error_policy(abort_on_error=nil)
+      abort_on_error = Defaults.abort_on_error if abort_on_error.nil?
+
+      if abort_on_error
+        :abort
+      else
+        :rescue
+      end
+    end
+
     def start
       output.start_run
     end
@@ -38,6 +57,12 @@ module TestBench
       fixture.extend(Fixture)
       fixture.test_run = instance
       fixture
+    end
+
+    module Defaults
+      def self.abort_on_error
+        Environment::Boolean.fetch('TEST_BENCH_ABORT_ON_ERROR', false)
+      end
     end
   end
 end
