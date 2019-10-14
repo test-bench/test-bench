@@ -1,6 +1,8 @@
 module TestBench
   class CLI
     class Run
+      Error = Class.new(RuntimeError)
+
       def test_run
         @test_run ||= TestBench::Run::Substitute.build
       end
@@ -20,11 +22,21 @@ module TestBench
       end
 
       def path(path)
-        if File.exist?(path)
+        if File.directory?(path)
+          directory(path)
+        elsif File.exist?(path)
           file(path)
         end
       end
       alias_method :<<, :path
+
+      def directory(path)
+        glob_pattern = File.join(path, '**', '*.rb')
+
+        Dir[glob_pattern].each do |file_path|
+          file(file_path)
+        end
+      end
 
       def file(path)
         if exclude_file_pattern.match?(path)
