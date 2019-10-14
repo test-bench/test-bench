@@ -13,15 +13,31 @@ module TestBench
       end
       attr_writer :exclude_file_pattern
 
+      def tests_directory
+        @tests_directory ||= Defaults.tests_directory
+      end
+      attr_writer :tests_directory
+
+      def path_counter
+        @path_counter ||= 0
+      end
+      attr_writer :path_counter
+
       def call(&block)
         test_run.start
 
         block.(self) unless block.nil?
 
+        if path_counter.zero?
+          path(tests_directory)
+        end
+
         test_run.finish
       end
 
       def path(path)
+        self.path_counter += 1
+
         if File.directory?(path)
           directory(path)
         elsif File.exist?(path)
@@ -55,6 +71,10 @@ module TestBench
           end
 
           Regexp.new(pattern)
+        end
+
+        def self.tests_directory
+          ENV.fetch('TEST_BENCH_TESTS_DIRECTORY', 'test/automated')
         end
       end
     end
