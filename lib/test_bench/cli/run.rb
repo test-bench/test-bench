@@ -23,13 +23,19 @@ module TestBench
       end
       attr_writer :path_counter
 
-      def self.build(tests_directory=nil, test_run: nil)
+      def self.build(tests_directory=nil, exclude_file_pattern: nil, test_run: nil)
         test_run ||= TestBench.run
 
         instance = new
         instance.tests_directory = tests_directory unless tests_directory.nil?
+        instance.exclude_file_pattern = exclude_file_pattern unless exclude_file_pattern.nil?
         instance.test_run = test_run
         instance
+      end
+
+      def self.call(tests_directory=nil, **args)
+        instance = build(tests_directory, **args)
+        instance.()
       end
 
       def self.configure(receiver, tests_directory=nil, attr_name: nil, **arguments)
