@@ -99,6 +99,8 @@ module TestBench
     def exit_assert_block(result)
       self.assert_block_depth -= 1
 
+      print_previous_error(true) unless previous_error.nil?
+
       return if verbose || assert_block_depth.nonzero?
 
       captured_text = writer.stop_capture
@@ -116,6 +118,16 @@ module TestBench
       self.file_error_counter += 1
 
       self.previous_error = error
+    end
+
+    def print_previous_error(indent)
+      writer.increase_indentation if indent
+
+      print_error(previous_error)
+
+      self.previous_error = nil
+
+      writer.decrease_indentation if indent
     end
 
     def print_error(error)
