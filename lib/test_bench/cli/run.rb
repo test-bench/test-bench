@@ -32,6 +32,11 @@ module TestBench
         instance
       end
 
+      def self.call(tests_directory=nil, test_run: nil)
+        instance = build(tests_directory, test_run: test_run)
+        instance.()
+      end
+
       def self.configure(receiver, tests_directory=nil, attr_name: nil, **arguments)
         attr_name ||= :run
 
