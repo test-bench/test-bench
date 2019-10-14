@@ -7,4 +7,12 @@ module TestBench
     end
   end
   singleton_class.attr_writer :run
+
+  def self.output
+    run.output
+  end
+
+  def self.output=(output)
+    run.output = output
+  end
 end
