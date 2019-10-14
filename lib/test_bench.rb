@@ -18,3 +18,6 @@ require 'test_bench/run'
 require 'test_bench/run/substitute'
 
 require 'test_bench/test_bench'
+
+require 'test_bench/cli/run'
+require 'test_bench/cli/run/substitute'
