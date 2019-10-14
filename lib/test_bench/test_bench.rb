@@ -8,6 +8,21 @@ module TestBench
   end
   singleton_class.attr_writer(:session)
 
+  def self.output
+    session.output
+  end
+
+  def self.set_output(output, session: nil)
+    session ||= self.session
+
+    if output.is_a?(Array)
+      output = Fixture::Output::Multiple.build(*output)
+    end
+
+    session.output = output
+  end
+  singleton_class.alias_method :output=, :set_output
+
   def self.fixture(session=nil, receiver: nil)
     session ||= self.session
     receiver ||= Object.new
