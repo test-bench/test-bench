@@ -1,0 +1,13 @@
+Changes
+=======
+
+2.1.0 - Wed Oct 17 2019
+^^^^^^^^^^^^^^^^^^^^^^^
+* The CLI accepts all of the settings as keyword arguments. Settings supplied to the CLI in this manner will be displayed as the default values by the CLI help text. This allows the CLI settings to be customized on a per-project basis, similar to a per-project configuration file.
+* The CLI::Run class accepts the +exclude_file_pattern+ setting as a keyword argument.
+* The output methods +enter_assert_block+ and +exit_assert_block+ are now supplied the caller location of the corresponding assertion.
+* A bug was fixed in the output implementation that would fail to print outer assertion failures from a block-form assert when the abort on error setting is active.
+
+2.0.0 - Tue Oct 15 2019
+^^^^^^^^^^^^^^^^^^^^^^^
+The changes from TestBench 1 are too numerous to enumerate. See link:/doc/Changes-From-TestBench-1-To-TestBench-2[Changes From TestBench 1 To TestBench 2] for an overview of the most significant changes.
