@@ -1,0 +1,247 @@
+Writing Tests
+=============
+
+Test files with TestBench are just Ruby scripts that contain tests organized hierarchically into contexts. For example:
+
+[source,ruby]
+----
+context "Arithmetic" do
+  value = 11
+
+  context "Multiplication" do
+    test "Any value multiplied by zero is zero" do
+      assert(value * 0 == 0)
+    end
+  end
+
+  context "Addition" do
+    test "Any value added by zero is the value" do
+      assert(value + 0 == value)
+    end
+  end
+end
+----
+
+The hierarchical test structure is represented by TestBench's output by two spaces of indentation. When the above example is run, the following output is written:
+
+----
+Arithmetic
+  Multiplication
+    Any value multiplied by zero is zero
+  Addition
+    Any value added by zero is the value
+----
+
+The +context+ method establishes a context around a block. Blocks given to +context+ can further divide the test file into sub-contexts. Ruby's lexical scoping allows variables defined in outer contexts to be available within nested contexts. Tests are titled blocks of code that perform assertions (typically one per test). Both contexts and tests may not have titles. Contexts without a title serve solely as lexical scopes and do not effect the test output in any way; nothing is printed and the indentation is not changed. Tests without titles are treated similarly, but if a test fails, a title of +Test+ is used to indicate the test failure. Also, both contexts and tests can also be skipped by omitting the block argument.
+
+[TIP]
+====
+As a convenience, TestBench includes the methods +_context+ and +_test+ which skip the context or test (respectively) regardless of whether a block is given. They are useful to temporarily disable a context or test, but should not ever be used in a finished test file.
+====
+
+Comments
+--------
+
+Test file output is intended to be read by users. Often, the text printed by +context+ and +test+ sufficiently expresses what behavior the tests are expecting out of the test subject. However, comments can be included in test code in order to provide the user with additional output.
+
+[source,ruby]
+----
+context "Arithmetic" do
+  value = 11
+
+  comment "Value: #{value}"
+
+  context "Multiplication" do
+    test "Any value multiplied by zero is zero" do
+      result = value * 0
+
+      comment "Result: #{result}"
+
+      assert(result == 0)
+    end
+  end
+
+  # ...
+end
+----
+
+Running the above example would produce the following output:
+
+----
+Arithmetic
+  Value: 11
+  Multiplication
+    Result: 0
+    Any value multiplied by zero is zero
+----
+
+Assertions
+----------
+
+TestBench offers four assertion methods: +assert+, +refute+, +assert_raises+, and +refute_raises+. The first method, +assert+, offers a block-form which allows for specialized assertions; in fact, +assert_raises+ and +refute+ raises are examples of such.
+
+Assert and Refute
+^^^^^^^^^^^^^^^^^
+
+The +assert+ and +refute+ methods accept a single positional parameter. An AssertionFailure error is raised by both methods based on whether the value of the positional parameter is +nil+ or +false+:
+
+[source,ruby]
+----
+assert(1 == 1)             # Passes
+assert(some_object.nil?)   # Passes if some_object is nil
+refute(1 != 1)             # Passes
+refute(!some_object)       # Passes if some_object is *not* nil
+
+assert(1 > 1)              # Fails
+refute(true)               # Fails
+----
+
+Assert & Refute Raises
+^^^^^^^^^^^^^^^^^^^^^^
+
+To test that a block of code raises an error, use +assert_raises+. It can be called with no arguments, in which case the given block must raise a StandardError of some kind. If a class is given as the first positional parameter, the block must raise an instance of the given class. The block cannot raise a subclass of the given class; to permit the block to raise a subclass, supply the keyword argument +strict: false+. A string can be given as the second positional parameter, which is an error message that the exception raised by the block must match precisely.
+
+When the given block raises an error that is not the class given to +assert_raises+, the error is _not_ rescued by +assert_raises+. Such an error was not anticipated by the test, and thus is not treated any different than any other error.
+
+[source,ruby]
+----
+# Passes
+assert_raises do
+  raise "Some error message"
+end
+
+# Passes
+assert_raises(KeyError) do
+  {}.fetch(:some_key)
+end
+
+# Passes
+assert_raises(RuntimeError, "Some error message") do
+  raise "Some error message"
+end
+
+# Fails
+assert_raises do
+end
+
+# Does not pass or fail; the error raised by the block is not rescued
+# by assert_raises, because it does not match the given class.
+assert_raises(ArgumentError) do
+  raise RuntimeError
+end
+
+# Like the above example, the error raised by the block is not
+# rescued. Even though the block raises a KeyError, which is a
+# subclass of IndexError, assert_raises is strict about errors being
+# an instance of the given class (and not a subclass).
+assert_raises(IndexError) do
+  {}.fetch(:some_key)
+end
+
+# Passes because the strictness is relaxed
+assert_raises(IndexError, strict: false) do
+  {}.fetch(:some_key)
+end
+
+# Fails; error messages do not match precisely
+assert_raises(RuntimeError, "Other error message") do
+  raise "Some error message"
+end
+----
+
+The +refute_raises+ method complements +assert_raises+. When no argument is given, the block is expected to _not_ raise a StandardError of some kind. When a class is given as an argument, the block must not raise an error of the given class. Similar to +assert_raises+, if the block raises an error that is not an instance of the given class, the error is not rescued by +refute_raises+ at all. Unlike its counterpart, however, +refute_raises+ does not accept a second message argument.
+
+[source,ruby]
+----
+# Passes
+refute_raises do
+end
+
+# Fails
+refute_raises do
+  raise "Some error message"
+end
+
+# Passes
+refute_raises(KeyError) do
+end
+
+# Fails
+refute_raises(KeyError) do
+  {}.fetch(:some_key)
+end
+
+# Does not pass or fail; the error raised by the block is not rescued
+# by assert_raises, because it does not match the given class.
+refute_raises(ArgumentError) do
+  raise RuntimeError
+end
+
+# Like the above example, the error raised by the block is not
+# rescued. Even though the block raises a KeyError, which is a
+# subclass of IndexError, refute_raises is strict about errors being
+# an instance of the given class (and not a subclass).
+refute_raises(IndexError) do
+  {}.fetch(:some_key)
+end
+
+# Fails because the strictness is relaxed
+refute_raises(IndexError, strict: false) do
+  {}.fetch(:some_key)
+end
+----
+
+As is evident from the examples, +assert_raises+ and +refute_raises+ have _three_ possible outcomes, not two: they can pass, they can fail, or they can ignore the error, causing it to surface up to the surrounding test.
+
+Block-form Assertions
+^^^^^^^^^^^^^^^^^^^^^
+
++assert+ takes an optional block which, when supplied, changes the way +assert+ operates. Without a block, +assert+ simply expects the value passed in to be "truthy." When a block is passed, however, a positional argument _must not_ be passed along with it. Instead, the block itself is interpreted as test code, and the assertion passes if and only if the entire block passes. The purpose of block-form syntax is to allow for specialized assertions. In fact, +assert_raises+ and +refute_raises+ both make use the block-form of +assert+.
+
+IMPORTANT: The block given to a block-form assertion _must_ perform at least one assertion, otherwise the block will fail.
+
+An example of a block-form assertion:
+
+[source,ruby]
+----
+def assert_json(string)
+  assert do
+    comment "Assert JSON: #{string.to_s[0..100]}"
+
+    assert(string.is_a?(String))
+
+    test "Can be parsed as JSON" do
+      refute_raises(JSON::ParserError) do
+        JSON.parse(string)
+      end
+    end
+  end
+end
+
+assert_json('{ "someKey": "some-value" }')
+----
+
+[IMPORTANT]
+====
+In the above example, an assertion failure would not refer to the correct source code file and line number. In order to correct this, all assertion methods accept an optional +caller_location+ keyword argument, which is set to the caller location by default:
+
+[source,ruby]
+----
+def assert_json(string, caller_location: nil)
+  caller_location ||= caller_locations.first
+
+  assert(caller_location: caller_location) do
+    # ...
+  end
+end
+----
+====
+
+NOTE
+----
+The block-form of assert allows TestBench to offer detailed assertion failure output similar to other testing frameworks, but it offers two significant advantages over them:
+
+1. Specialized assertions are implemented using the same interface that TestBench users already know (versus, for instance, a separate matcher API)
+2. Output from block-form assertions can be printed even when the assertions pass, by enabling output verbosity
+
+**Next**: link:Output.adoc[Output]
