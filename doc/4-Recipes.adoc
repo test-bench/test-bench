@@ -1,0 +1,29 @@
+Recipes
+=======
+
+**Previous**: link:3-Test-Fixtures.adoc[Test Fixtures]
+
+Changing TestBench's Output Device
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TestBench's output device can be set via +TestBench.output=+ in e.g. +test/test_init+. For example:
+
+[source,ruby]
+----
+# Begin test/test_init.rb
+
+# ...
+
+TestBench.output = SomeOutput.new
+
+# End test/test_init.rb
+----
+
+Multiple outputs can also be assigned via an array, e.g.:
+
+[source,ruby]
+----
+TestBench.output = [TestBench::Output.build, SomeOutput.new]
+----
+
+[TODO] Complete
