@@ -1,0 +1,1386 @@
+TestBench is aborting (TestBench::Fixture::ErrorPolicy::Abort)
+Running test/automated/automated_init.rb
+(Nothing written)
+
+Running test/automated/cli/argument_parser/omit_backtrace_pattern.rb
+CLI
+  Argument Parser
+    Omit Backtrace Pattern
+      Short Form
+      Long Form
+      Long Form, Negated
+      Invalid Text
+        Raises an error
+
+Running test/automated/cli/argument_parser/help.rb
+CLI
+  Argument Parser
+    Help
+      Short Form
+        Exits process
+        Exit code indicates success
+      Long Form
+        Exits process
+        Exit code indicates success
+
+Running test/automated/cli/argument_parser/exclude_file_pattern.rb
+CLI
+  Argument Parser
+    Exclude File Pattern
+      Short Form
+      Long Form
+      Long Form, Negated
+      Invalid Text
+        Raises an error
+
+Running test/automated/cli/argument_parser/class_actuator.rb
+CLI
+  Argument Parser
+    Class Actuator
+      Parses arguments
+      Returns extra arguments
+
+Running test/automated/cli/argument_parser/abort_on_error.rb
+CLI
+  Argument Parser
+    Abort On Error
+      Short Form
+      Long Form
+      Long Form, Negated
+
+Running test/automated/set_output.rb
+Set Output
+  Sets the session's output to the one given
+  Given Multiple Outputs
+    Assigns a multiple output
+    Assigned output writes to each given output
+
+Running test/automated/runner/substitute/substitute.rb
+Runner
+  Substitute
+    Ran Predicate
+      No Paths Given
+        Returns true
+      All Given Paths Were Ran
+        Returns true
+      Some Given Paths Were Not Ran
+        Returns false
+      No Given Paths Were Ran
+        Returns false
+
+Running test/automated/runner/runner.rb
+Runner
+  Test file located at path is loaded
+  Session is started
+  Session is finished
+
+Running test/automated/runner/configure_receiver/optional_session_argument.rb
+Runner
+  Configure Receiver
+    Optional Session Argument
+      Given
+        Sets session dependency of run
+      Omitted
+        Sets session dependency to singleton
+
+Running test/automated/runner/configure_receiver/configure_receiver.rb
+Runner
+  Configure Receiver
+    Responds to configure
+    Attribute is set on receiver
+    Returns the instance that was assigned
+    Optional Attribute Name
+      Given
+        Given attribute is set on receiver (Attribute: given_attr_name)
+        Default attribute is not set on receiver
+      Omitted
+        Default attribute is set on receiver (Attribute: run)
+
+Running test/automated/runner/configure_receiver/paths.rb
+Runner
+  Configure Receiver
+    Paths Given
+      Sets paths on configured run
+
+Running test/automated/runner/directory/exclude_file_pattern.rb
+Runner
+  Directory
+    Exclude File Pattern
+      Loads non-excluded file
+      Ignores excluded file
+
+Running test/automated/runner/directory/load_order.rb
+Runner
+  Directory
+    Load Order
+      Loads files in alphanumeric order by path name
+
+Running test/automated/runner/path_not_found.rb
+Runner
+  Path Not Found
+    Raises error
+
+Running test/automated/runner/class_actuator/positional_argument.rb
+Runner
+  Class Actuator
+    Positional Argument
+      Loads all given paths
+
+Running test/automated/output/session/comment.rb
+Output
+  Session
+    Comment
+
+Running test/automated/output/session/context/no_title/no_title.rb
+Output
+  Session
+    Context
+      No Title
+
+Running test/automated/output/session/context/skipped_outer_context.rb
+Output
+  Session
+    Context
+      Skipped Outer Context
+
+Running test/automated/output/session/context/context.rb
+Output
+  Session
+    Context
+
+Running test/automated/output/session/assert_block/failure/file.rb
+Output
+  Session
+    Assert Block
+      Failure
+        File
+
+Running test/automated/output/session/assert_block/failure/failure.rb
+Output
+  Session
+    Assert Block
+      Failure
+
+Running test/automated/output/session/assert_block/failure/fixture.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Fixture
+
+Running test/automated/output/session/assert_block/failure/context.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Context
+
+Running test/automated/output/session/assert_block/failure/abort_error_policy.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Abort Error Policy
+
+Running test/automated/output/session/assert_block/pass/subsequent_failure.rb
+Output
+  Session
+    Assert Block
+      Pass
+        Subsequent Failure
+          Does not print any output from assert block that passed
+
+Running test/automated/output/session/assert_block/pass/nesting.rb
+Output
+  Session
+    Assert Block
+      Pass
+        Nesting
+
+Running test/automated/output/session/errors/context/no_title.rb
+Output
+  Session
+    Errors
+      Context
+        No Title
+          Prints the error, unindented
+
+Running test/automated/output/session/errors/context/nesting.rb
+Output
+  Session
+    Errors
+      Context
+        Nesting
+          Prints the error only once
+
+Running test/automated/output/session/errors/test/test.rb
+Output
+  Session
+    Errors
+      Test
+        Prints the error after the test title, indented
+
+Running test/automated/output/session/errors/test/nesting.rb
+Output
+  Session
+    Errors
+      Test
+        Nesting
+          Prints the error only once
+
+Running test/automated/output/session/errors/fixture/fixture.rb
+Output
+  Session
+    Errors
+      Fixture
+        Prints the error
+
+Running test/automated/output/session/file/no_output.rb
+Output
+  Session
+    File
+      No Output
+
+Running test/automated/output/session/test/no_title/verbose.rb
+Output
+  Session
+    Test
+      No Title
+        Verbose
+
+Running test/automated/output/session/test/verbose.rb
+Output
+  Session
+    Test
+      Verbose Mode
+
+Running test/automated/output/session/fixture/fixture.rb
+Output
+  Session
+    Fixture
+
+Running test/automated/output/build/unknown_level.rb
+Output
+  Build
+    Unknown Level
+      Is an error
+
+Running test/automated/output/print_error/build.rb
+Output
+  Print Error
+    Build
+      Omit Backtrace Pattern
+      Reverse Backtraces
+      Optional Writer Argument Given
+        Given writer is assigned to print_error
+      Styling And Device Arguments Given
+        A writer is configured
+        Writer is configured to write to given device
+        Styling is set on writer
+
+Running test/automated/output/print_error/reverse/styling.rb
+Output
+  Print Error
+    Reverse
+      Styling
+
+Running test/automated/output/print_error/reverse/assertion_failure.rb
+Output
+  Print Error
+    Reverse
+      Assertion Failure
+        Writes error message to device
+
+Running test/automated/output/print_error/reverse/error_cause.rb
+Output
+  Print Error
+    Reverse
+      Error Cause
+
+Running test/automated/output/print_error/non_reverse/omit_backtrace_pattern.rb
+Output
+  Print Error
+    Non Reverse
+      Omit Backtrace Pattern
+        Matching backtrace frames are omitted
+
+Running test/automated/output/print_error/non_reverse/error_cause.rb
+Output
+  Print Error
+    Non Reverse
+      Error Cause
+
+Running test/automated/output/print_error/non_reverse/non_reverse.rb
+Output
+  Print Error
+    Non Reverse
+      Writes error message to device
+
+Running test/automated/output/writer/substitute/enable_styling.rb
+Output
+  Writer
+    Substitute
+      Enable Styling
+        Styling is enabled
+
+Running test/automated/output/writer/substitute/set_capture.rb
+Output
+  Writer
+    Substitute
+      Set Capture
+        Stop Capture
+          Returns the text that was captured
+
+Running test/automated/output/writer/escape_code/unknown_code.rb
+Output
+  Writer
+    Escape Code
+      Unknown Code
+        Raises an error
+
+Running test/automated/output/writer/escape_code/styling_enabled.rb
+Output
+  Writer
+    Escape Code
+      Styling Enabled
+        Text Mode
+          Initiates an escape sequence on device with the given code
+          Returns the writer
+          Writer is changed to escape sequence mode
+          Increases byte offset by the number of bytes written to device
+        Escape Sequence Mode
+          Continues escape sequence on device with the given code
+          Returns the writer
+          Writer remains in escape sequence mode
+          Increases byte offset by the number of bytes written to device
+
+Running test/automated/output/writer/configure_receiver/configure_receiver.rb
+Output
+  Writer
+    Configure Receiver
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: writer)
+
+Running test/automated/output/writer/indentation_depth.rb
+Output
+  Writer
+    Indentation Depth
+      Increase
+      Decrease
+
+Running test/automated/output/writer/capture/start.rb
+Output
+  Writer
+    Capture
+      Start Capture
+        Not Already Capturing
+          Device is changed to a string IO
+          Previous device is saved
+          Device is configured to write to given string
+          Writer is capturing
+        Already Capturing
+          Raises an error
+
+Running test/automated/output/writer/text.rb
+Output
+  Writer
+    Text
+      Text Mode
+        Writes given text to device
+        Returns the writer
+        Writer remains in text mode
+        Increases byte offset by the number of bytes written to device
+      Escape Sequence Mode
+        Terminates escape sequence on device, then writes given text
+        Returns the writer
+        Writer is changed to text mode
+        Increases byte offset by the number of bytes written to device
+
+Running test/automated/output/writer/newline.rb
+Output
+  Writer
+    Newline
+      Text Mode
+        Writes newline character to device
+        Returns the writer
+        Writer remains in text mode
+        Increases byte offset
+      Escape Sequence Mode
+        Terminates escape sequence on device, then writes newline character
+        Returns the writer
+        Writer is changed to text mode
+        Increases byte offset by at least one more than escape sequence termination
+
+Running test/automated/output/error_summary/finish.rb
+Output
+  Error Summary
+    Finish
+      Errors
+        Writes error summary
+      No Errors
+        Does not write error summary
+
+Running test/automated/output/error_summary/enter_file.rb
+Output
+  Error Summary
+    Enter File
+      Starts new file entry
+      Current File
+        Path attribute is set
+        Error list is initialized
+
+Running test/automated/output/levels/failure/pass.rb
+Output
+  Levels
+    Failure Level
+      Pass
+        Writes nothing
+
+Running test/automated/output/levels/failure/level_predicate.rb
+Output
+  Levels
+    Failure Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/pass/level_predicate.rb
+Output
+  Levels
+    Pass Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/summary/failure.rb
+Output
+  Levels
+    Summary Level
+      Failure
+        Writes errors and error summary
+
+Running test/automated/output/levels/none/level_predicate.rb
+Output
+  Levels
+    None Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/debug/level_predicate.rb
+Output
+  Levels
+    Debug Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/run_summary/build.rb
+Output
+  Run Summary
+    Build
+      Timer dependency is configured and assigned to output
+      Optional Writer Argument Given
+        Given writer is assigned to output
+      Styling And Device Arguments Given
+        A writer is configured
+        Writer is configured to write to given device
+        Styling is set on writer
+
+Running test/automated/output/run_summary/finish_test/pass.rb
+Output
+  Run Summary
+    Finish Test
+      Pass
+        Pass count is incremented
+        Failure count is not incremented
+
+Running test/automated/output/run_summary/finish_test/finish_test.rb
+Output
+  Run Summary
+    Finish Test
+      Test count is incremented
+
+Running test/automated/output/run_summary/skip_test.rb
+Output
+  Run Summary
+    Skip Test
+      Skip count is incremented
+      Test count is not incremented
+
+Running test/automated/output/run_summary/finish_run/pass.rb
+Output
+  Run Summary
+    Finish Run
+      Pass
+        No Tests Skipped
+          Prints number of tests passed in green
+        Some Tests Skipped
+          Prints number of tests passed in green, number of tests skipped in yellow
+        No Tests Passed
+          Prints number of tests passed in default color
+
+Running test/automated/output/run_summary/finish_run/finish_run.rb
+Output
+  Run Summary
+    Finish Run
+      Prints summary
+
+Running test/automated/output/timer/substitute/stop.rb
+Output
+  Timer
+    Substitute
+      Stop
+        Not Already Stopped
+          Elapsed Time Not Set
+            Timer is stopped
+            Returns zero
+          Elapsed Time Set
+            Timer is stopped
+            Returns the value that was set
+        Already Stopped
+          Raises error
+
+Running test/automated/output/timer/stop.rb
+Output
+  Timer
+    Stop
+      Not Already Stopped
+        Timer is stopped
+        Returns the seconds elapsed since start time
+        Resets start time
+      Already Stopped
+        Raises error
+
+Running test/automated/output/configure_receiver.rb
+Output
+  Configure Receiver
+    Accepts Arguments
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: output)
+    Does Not Accept Any Arguments
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: output)
+
+Running test/automated/output/multiple/multiple.rb
+Output
+  Multiple
+    Two Outputs Are Registered
+      Method: start
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_file
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_file
+        Forwarded to first output
+        Forwarded to second output
+      Method: start_fixture
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish_fixture
+        Forwarded to first output
+        Forwarded to second output
+      Method: assert
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_assert_block
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_assert_block
+        Forwarded to first output
+        Forwarded to second output
+      Method: comment
+        Forwarded to first output
+        Forwarded to second output
+      Method: error
+        Forwarded to first output
+        Forwarded to second output
+      Method: start_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: skip_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_context
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_context
+        Forwarded to first output
+        Forwarded to second output
+      Method: skip_context
+        Forwarded to first output
+        Forwarded to second output
+
+Running test/automated/fixtures/configure_receiver/additional_arguments.rb
+Fixtures
+  Configure Receiver
+    Additional Arguments
+      Positional
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+      Keyword
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+      Positional And Keyword
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+
+Running test/automated/build_session/optional_abort_on_error_argument.rb
+Build Session
+  Optional Abort On Error Argument
+    True
+      Session error policy configured to abort
+    False
+      Session error policy configured to rescue
+
+Running test/automated/build_session/build_session.rb
+Build Session
+  Builds a session
+  Output dependency is configured
+
+Finished running 74 files
+Ran 220 tests in 0.078s (2820.5 tests/second)
+220 passed, 0 skipped, 0 failed, 0 total errors
+
+TestBench is aborting (TestBench::Fixture::ErrorPolicy::Abort)
+Running test/automated/automated_init.rb
+(Nothing written)
+
+Running test/automated/cli/argument_parser/omit_backtrace_pattern.rb
+CLI
+  Argument Parser
+    Omit Backtrace Pattern
+      Short Form
+      Long Form
+      Long Form, Negated
+      Invalid Text
+        Raises an error
+
+Running test/automated/cli/argument_parser/help.rb
+CLI
+  Argument Parser
+    Help
+      Short Form
+        Exits process
+        Exit code indicates success
+      Long Form
+        Exits process
+        Exit code indicates success
+
+Running test/automated/cli/argument_parser/exclude_file_pattern.rb
+CLI
+  Argument Parser
+    Exclude File Pattern
+      Short Form
+      Long Form
+      Long Form, Negated
+      Invalid Text
+        Raises an error
+
+Running test/automated/cli/argument_parser/class_actuator.rb
+CLI
+  Argument Parser
+    Class Actuator
+      Parses arguments
+      Returns extra arguments
+
+Running test/automated/cli/argument_parser/abort_on_error.rb
+CLI
+  Argument Parser
+    Abort On Error
+      Short Form
+      Long Form
+      Long Form, Negated
+
+Running test/automated/set_output.rb
+Set Output
+  Sets the session's output to the one given
+  Given Multiple Outputs
+    Assigns a multiple output
+    Assigned output writes to each given output
+
+Running test/automated/runner/substitute/substitute.rb
+Runner
+  Substitute
+    Ran Predicate
+      No Paths Given
+        Returns true
+      All Given Paths Were Ran
+        Returns true
+      Some Given Paths Were Not Ran
+        Returns false
+      No Given Paths Were Ran
+        Returns false
+
+Running test/automated/runner/runner.rb
+Runner
+  Test file located at path is loaded
+  Session is started
+  Session is finished
+
+Running test/automated/runner/configure_receiver/optional_session_argument.rb
+Runner
+  Configure Receiver
+    Optional Session Argument
+      Given
+        Sets session dependency of run
+      Omitted
+        Sets session dependency to singleton
+
+Running test/automated/runner/configure_receiver/configure_receiver.rb
+Runner
+  Configure Receiver
+    Responds to configure
+    Attribute is set on receiver
+    Returns the instance that was assigned
+    Optional Attribute Name
+      Given
+        Given attribute is set on receiver (Attribute: given_attr_name)
+        Default attribute is not set on receiver
+      Omitted
+        Default attribute is set on receiver (Attribute: run)
+
+Running test/automated/runner/configure_receiver/paths.rb
+Runner
+  Configure Receiver
+    Paths Given
+      Sets paths on configured run
+
+Running test/automated/runner/directory/exclude_file_pattern.rb
+Runner
+  Directory
+    Exclude File Pattern
+      Loads non-excluded file
+      Ignores excluded file
+
+Running test/automated/runner/directory/load_order.rb
+Runner
+  Directory
+    Load Order
+      Loads files in alphanumeric order by path name
+
+Running test/automated/runner/path_not_found.rb
+Runner
+  Path Not Found
+    Raises error
+
+Running test/automated/runner/class_actuator/positional_argument.rb
+Runner
+  Class Actuator
+    Positional Argument
+      Loads all given paths
+
+Running test/automated/output/session/comment.rb
+Output
+  Session
+    Comment
+
+Running test/automated/output/session/context/no_title/no_title.rb
+Output
+  Session
+    Context
+      No Title
+
+Running test/automated/output/session/context/skipped_outer_context.rb
+Output
+  Session
+    Context
+      Skipped Outer Context
+
+Running test/automated/output/session/context/context.rb
+Output
+  Session
+    Context
+
+Running test/automated/output/session/assert_block/failure/file.rb
+Output
+  Session
+    Assert Block
+      Failure
+        File
+
+Running test/automated/output/session/assert_block/failure/failure.rb
+Output
+  Session
+    Assert Block
+      Failure
+
+Running test/automated/output/session/assert_block/failure/fixture.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Fixture
+
+Running test/automated/output/session/assert_block/failure/context.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Context
+
+Running test/automated/output/session/assert_block/failure/abort_error_policy.rb
+Output
+  Session
+    Assert Block
+      Failure
+        Abort Error Policy
+
+Running test/automated/output/session/assert_block/pass/subsequent_failure.rb
+Output
+  Session
+    Assert Block
+      Pass
+        Subsequent Failure
+          Does not print any output from assert block that passed
+
+Running test/automated/output/session/assert_block/pass/nesting.rb
+Output
+  Session
+    Assert Block
+      Pass
+        Nesting
+
+Running test/automated/output/session/errors/context/no_title.rb
+Output
+  Session
+    Errors
+      Context
+        No Title
+          Prints the error, unindented
+
+Running test/automated/output/session/errors/context/nesting.rb
+Output
+  Session
+    Errors
+      Context
+        Nesting
+          Prints the error only once
+
+Running test/automated/output/session/errors/test/test.rb
+Output
+  Session
+    Errors
+      Test
+        Prints the error after the test title, indented
+
+Running test/automated/output/session/errors/test/nesting.rb
+Output
+  Session
+    Errors
+      Test
+        Nesting
+          Prints the error only once
+
+Running test/automated/output/session/errors/fixture/fixture.rb
+Output
+  Session
+    Errors
+      Fixture
+        Prints the error
+
+Running test/automated/output/session/file/no_output.rb
+Output
+  Session
+    File
+      No Output
+
+Running test/automated/output/session/test/no_title/verbose.rb
+Output
+  Session
+    Test
+      No Title
+        Verbose
+
+Running test/automated/output/session/test/verbose.rb
+Output
+  Session
+    Test
+      Verbose Mode
+
+Running test/automated/output/session/fixture/fixture.rb
+Output
+  Session
+    Fixture
+
+Running test/automated/output/build/unknown_level.rb
+Output
+  Build
+    Unknown Level
+      Is an error
+
+Running test/automated/output/print_error/build.rb
+Output
+  Print Error
+    Build
+      Omit Backtrace Pattern
+      Reverse Backtraces
+      Optional Writer Argument Given
+        Given writer is assigned to print_error
+      Styling And Device Arguments Given
+        A writer is configured
+        Writer is configured to write to given device
+        Styling is set on writer
+
+Running test/automated/output/print_error/reverse/styling.rb
+Output
+  Print Error
+    Reverse
+      Styling
+
+Running test/automated/output/print_error/reverse/assertion_failure.rb
+Output
+  Print Error
+    Reverse
+      Assertion Failure
+        Writes error message to device
+
+Running test/automated/output/print_error/reverse/error_cause.rb
+Output
+  Print Error
+    Reverse
+      Error Cause
+
+Running test/automated/output/print_error/non_reverse/omit_backtrace_pattern.rb
+Output
+  Print Error
+    Non Reverse
+      Omit Backtrace Pattern
+        Matching backtrace frames are omitted
+
+Running test/automated/output/print_error/non_reverse/error_cause.rb
+Output
+  Print Error
+    Non Reverse
+      Error Cause
+
+Running test/automated/output/print_error/non_reverse/non_reverse.rb
+Output
+  Print Error
+    Non Reverse
+      Writes error message to device
+
+Running test/automated/output/writer/substitute/enable_styling.rb
+Output
+  Writer
+    Substitute
+      Enable Styling
+        Styling is enabled
+
+Running test/automated/output/writer/substitute/set_capture.rb
+Output
+  Writer
+    Substitute
+      Set Capture
+        Stop Capture
+          Returns the text that was captured
+
+Running test/automated/output/writer/escape_code/unknown_code.rb
+Output
+  Writer
+    Escape Code
+      Unknown Code
+        Raises an error
+
+Running test/automated/output/writer/escape_code/styling_enabled.rb
+Output
+  Writer
+    Escape Code
+      Styling Enabled
+        Text Mode
+          Initiates an escape sequence on device with the given code
+          Returns the writer
+          Writer is changed to escape sequence mode
+          Increases byte offset by the number of bytes written to device
+        Escape Sequence Mode
+          Continues escape sequence on device with the given code
+          Returns the writer
+          Writer remains in escape sequence mode
+          Increases byte offset by the number of bytes written to device
+
+Running test/automated/output/writer/configure_receiver/configure_receiver.rb
+Output
+  Writer
+    Configure Receiver
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: writer)
+
+Running test/automated/output/writer/indentation_depth.rb
+Output
+  Writer
+    Indentation Depth
+      Increase
+      Decrease
+
+Running test/automated/output/writer/capture/start.rb
+Output
+  Writer
+    Capture
+      Start Capture
+        Not Already Capturing
+          Device is changed to a string IO
+          Previous device is saved
+          Device is configured to write to given string
+          Writer is capturing
+        Already Capturing
+          Raises an error
+
+Running test/automated/output/writer/text.rb
+Output
+  Writer
+    Text
+      Text Mode
+        Writes given text to device
+        Returns the writer
+        Writer remains in text mode
+        Increases byte offset by the number of bytes written to device
+      Escape Sequence Mode
+        Terminates escape sequence on device, then writes given text
+        Returns the writer
+        Writer is changed to text mode
+        Increases byte offset by the number of bytes written to device
+
+Running test/automated/output/writer/newline.rb
+Output
+  Writer
+    Newline
+      Text Mode
+        Writes newline character to device
+        Returns the writer
+        Writer remains in text mode
+        Increases byte offset
+      Escape Sequence Mode
+        Terminates escape sequence on device, then writes newline character
+        Returns the writer
+        Writer is changed to text mode
+        Increases byte offset by at least one more than escape sequence termination
+
+Running test/automated/output/error_summary/finish.rb
+Output
+  Error Summary
+    Finish
+      Errors
+        Writes error summary
+      No Errors
+        Does not write error summary
+
+Running test/automated/output/error_summary/enter_file.rb
+Output
+  Error Summary
+    Enter File
+      Starts new file entry
+      Current File
+        Path attribute is set
+        Error list is initialized
+
+Running test/automated/output/levels/failure/pass.rb
+Output
+  Levels
+    Failure Level
+      Pass
+        Writes nothing
+
+Running test/automated/output/levels/failure/level_predicate.rb
+Output
+  Levels
+    Failure Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/pass/level_predicate.rb
+Output
+  Levels
+    Pass Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/summary/failure.rb
+Output
+  Levels
+    Summary Level
+      Failure
+        Writes errors and error summary
+
+Running test/automated/output/levels/none/level_predicate.rb
+Output
+  Levels
+    None Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/levels/debug/level_predicate.rb
+Output
+  Levels
+    Debug Level
+      Level Predicate
+        Correct
+        Incorrect
+
+Running test/automated/output/run_summary/build.rb
+Output
+  Run Summary
+    Build
+      Timer dependency is configured and assigned to output
+      Optional Writer Argument Given
+        Given writer is assigned to output
+      Styling And Device Arguments Given
+        A writer is configured
+        Writer is configured to write to given device
+        Styling is set on writer
+
+Running test/automated/output/run_summary/finish_test/pass.rb
+Output
+  Run Summary
+    Finish Test
+      Pass
+        Pass count is incremented
+        Failure count is not incremented
+
+Running test/automated/output/run_summary/finish_test/finish_test.rb
+Output
+  Run Summary
+    Finish Test
+      Test count is incremented
+
+Running test/automated/output/run_summary/skip_test.rb
+Output
+  Run Summary
+    Skip Test
+      Skip count is incremented
+      Test count is not incremented
+
+Running test/automated/output/run_summary/finish_run/pass.rb
+Output
+  Run Summary
+    Finish Run
+      Pass
+        No Tests Skipped
+          Prints number of tests passed in green
+        Some Tests Skipped
+          Prints number of tests passed in green, number of tests skipped in yellow
+        No Tests Passed
+          Prints number of tests passed in default color
+
+Running test/automated/output/run_summary/finish_run/finish_run.rb
+Output
+  Run Summary
+    Finish Run
+      Prints summary
+
+Running test/automated/output/timer/substitute/stop.rb
+Output
+  Timer
+    Substitute
+      Stop
+        Not Already Stopped
+          Elapsed Time Not Set
+            Timer is stopped
+            Returns zero
+          Elapsed Time Set
+            Timer is stopped
+            Returns the value that was set
+        Already Stopped
+          Raises error
+
+Running test/automated/output/timer/stop.rb
+Output
+  Timer
+    Stop
+      Not Already Stopped
+        Timer is stopped
+        Returns the seconds elapsed since start time
+        Resets start time
+      Already Stopped
+        Raises error
+
+Running test/automated/output/configure_receiver.rb
+Output
+  Configure Receiver
+    Accepts Arguments
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: output)
+    Does Not Accept Any Arguments
+      Responds to configure
+      Attribute is set on receiver
+      Returns the instance that was assigned
+      Optional Attribute Name
+        Given
+          Given attribute is set on receiver (Attribute: given_attr_name)
+          Default attribute is not set on receiver
+        Omitted
+          Default attribute is set on receiver (Attribute: output)
+
+Running test/automated/output/multiple/multiple.rb
+Output
+  Multiple
+    Two Outputs Are Registered
+      Method: start
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_file
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_file
+        Forwarded to first output
+        Forwarded to second output
+      Method: start_fixture
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish_fixture
+        Forwarded to first output
+        Forwarded to second output
+      Method: assert
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_assert_block
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_assert_block
+        Forwarded to first output
+        Forwarded to second output
+      Method: comment
+        Forwarded to first output
+        Forwarded to second output
+      Method: error
+        Forwarded to first output
+        Forwarded to second output
+      Method: start_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: finish_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: skip_test
+        Forwarded to first output
+        Forwarded to second output
+      Method: enter_context
+        Forwarded to first output
+        Forwarded to second output
+      Method: exit_context
+        Forwarded to first output
+        Forwarded to second output
+      Method: skip_context
+        Forwarded to first output
+        Forwarded to second output
+
+Running test/automated/fixtures/configure_receiver/additional_arguments.rb
+Fixtures
+  Configure Receiver
+    Additional Arguments
+      Positional
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+      Keyword
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+      Positional And Keyword
+        Responds to configure
+        Attribute is set on receiver
+        Returns the instance that was assigned
+        Optional Attribute Name
+          Given
+            Given attribute is set on receiver (Attribute: given_attr_name)
+            Default attribute is not set on receiver
+          Omitted
+            Default attribute is set on receiver (Attribute: some_attr)
+
+Running test/automated/build_session/optional_abort_on_error_argument.rb
+Build Session
+  Optional Abort On Error Argument
+    True
+      Session error policy configured to abort
+    False
+      Session error policy configured to rescue
+
+Running test/automated/build_session/build_session.rb
+Build Session
+  Builds a session
+  Output dependency is configured
+
+Finished running 74 files
+Ran 220 tests in 0.082s (2682.9 tests/second)
+220 passed, 0 skipped, 0 failed, 0 total errors
+
