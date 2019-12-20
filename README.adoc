@@ -1,0 +1,126 @@
+Test Bench
+==========
+
+TestBench is a testing framework for Ruby aiming to offer precisely what is needed to test well-designed code effectively and easily. In stark contrast to most other testing frameworks, test files are written using a procedural API, not a declarative one, which brings a score of substantial benefits in exchange for largely immaterial drawbacks. As a result, TestBench can be learned very quickly. However, users should not expect it to offer many palliative features that ease the difficulties inherent to working with vast, long-running, or brittle test suites. With that in mind, even those situations can usually be addressed with a little improvising.
+
+Quick Start Guide
+-----------------
+
+To install TestBench with Rubygems:
+
+[source]
+----
+> gem install test_bench
+----
+
+Or, to add it to a project's +Gemfile+ if using Bundler:
+
+[source]
+----
+gem 'test_bench'
+----
+
+Next, write a test loader, e.g. +test/test_init.rb+:
+
+[source,ruby]
+----
+# Begin test/test_init.rb
+
+# Load Test Bench and then activate it
+require 'test_bench'; TestBench.activate
+
+# Load the code to be tested
+require_relative '../lib/my/code.rb'
+
+# End test/test_init.rb
+----
+
+Then add test files that require the test loader via +require_relative+. The typical directory to store test files is +test/automated+. For example:
+
+[source,ruby]
+----
+# Begin test/automated/some_test_file.rb
+
+require_relative '../test_init'
+
+context "Some Context" do
+  test "Some test" do
+    assert(true)
+  end
+
+  context "Inner Context" do
+    test "Some other test" do
+      assert(false) # Will fail!
+    end
+  end
+end
+
+# End test/automated/some_test_file.rb
+----
+
+The above test file can be run directly by ruby:
+
+image::/doc/test-bench-run-ruby.png[Run Test Bench With Ruby]
+
+To run all the tests within e.g. the +test/automated+ directory, the TestBench CLI can be used. The TestBench gem doesn't include an executable, so invoke the CLI from a file within the project (commonly +test/automated.rb+):
+
+[source,ruby]
+----
+# Begin test/automated.rb
+
+require_relative './test_init'
+
+TestBench::CLI.(tests_directory: 'test/automated')
+
+# End test/automated.rb
+----
+
+Now use ruby to run the CLI:
+
+image::/doc/test-bench-run-cli.png[Run Test Bench With CLI]
+
+After that, the project should be up and running.
+
+Documentation
+-------------
+
+[IMPORTANT]
+====
+Documentation for the latest release of TestBench (TestBench 2) is still in progress.
+
+For a list of changes from the previous generation (TestBench 1), see link:/doc/Changes-From-TestBench-1-To-TestBench-2.adoc[Changes From TestBench 1 To TestBench 2].
+
+The previous documentation and project can still be found link:https://github.com/test-bench/test-bench-1.x[here].
+====
+
+1. link:/doc/1-Installation-and-Configuration.adoc[Installation and Configuration]
+2. link:/doc/2-Basic-Usage.adoc[Basic Usage]
+3. link:/doc/3-Advanced-Usage.adoc[Advanced Usage]
+5. link:/doc/4-Recipes.adoc[Recipes]
+
+Recent Changes
+--------------
+
+For a comprehensive list of changes, see link:/doc/Changes.adoc[Changes]
+
+2.1.1 - Thu Dec 19 2019
+^^^^^^^^^^^^^^^^^^^^^^^
+* Test files and subdirectories found within directories are sorted by the CLI before being loaded.
+
+2.1.0 - Wed Oct 17 2019
+^^^^^^^^^^^^^^^^^^^^^^^
+* The CLI accepts all of the settings as keyword arguments. Settings supplied to the CLI in this manner will be displayed as the default values by the CLI help text. This allows the CLI settings to be customized on a per-project basis, similar to a per-project configuration file.
+* The CLI::Run class accepts the +exclude_file_pattern+ setting as a keyword argument.
+* The output methods +enter_assert_block+ and +exit_assert_block+ are now supplied the caller location of the corresponding assertion.
+* A bug was fixed in the output implementation that would fail to print outer assertion failures from a block-form assert when the abort on error setting is active.
+
+2.0.0 - Tue Oct 15 2019
+^^^^^^^^^^^^^^^^^^^^^^^
+The changes from TestBench 1 are too numerous to enumerate. See link:/doc/Changes-From-TestBench-1-To-TestBench-2.adoc[Changes From TestBench 1 To TestBench 2] for an overview of the most significant changes.
+
+License
+-------
+
+Test Bench is licensed under the link:/MIT-License.txt[MIT license].
+
+Copyright © Nathan Ladd

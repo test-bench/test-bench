@@ -1,0 +1,145 @@
+Installation and Configuration
+==============================
+
+Gem Installation
+----------------
+
+To install TestBench with Rubygems:
+
+[source]
+----
+> gem install test_bench
+----
+
+For components and web applications designed to be executed, it is common practice to use Bundler to manage gem dependencies. To incorporate TestBench into such a project, add an entry to the project's +Gemfile+:
+
+[source,ruby]
+----
+gem 'test_bench', group: :development
+
+# - OR -
+
+group :development do
+  gem 'test_bench'
+end
+----
+
+When writing libraries, TestBench can be added to the +gemspec+ file:
+
+[source,ruby]
+----
+Gem::Specification.new do |s|
+  # ...
+
+  s.add_development_dependency "test_bench"
+
+  # ...
+end
+----
+
+If such a library provides link:/doc/3-Advanced-Usage.adoc#fixture-classes[fixture classes], then add the +test_bench-fixture+ gem as a dependency, so that users of the library may make use of the fixtures without TestBench having to be loaded:
+
+[source,ruby]
+----
+Gem::Specification.new do |s|
+  # ...
+
+  s.add_dependency "test_bench-fixture"
+  s.add_development_dependency "test_bench"
+
+  # ...
+end
+----
+
+Project Structure
+-----------------
+
+TestBench does not impose any particular project structure, but it helps to begin with a reasonably standardized baseline. This section outlines such a standard. Begin by placing a _test initialization file_ at +test/test_init.rb+:
+
+[source,ruby]
+----
+# Begin test/test_init.rb
+
+# Load Test Bench and then activate it
+require 'test_bench'; TestBench.activate
+
+# Load the code to be tested
+require_relative '../lib/my/code.rb'
+
+# End test/test_init.rb
+----
+
+The first significant line of code loads TestBench and then "activates" it, making its core methods (+context+, +test+, +assert+, etc.) available to test files. For those concerned about modifying the Ruby runtime (often called "monkeypatching"), activating TestBench is link:/doc/3-Advanced-Usage.adoc#using-test-bench-without-activation[not strictly necessary]. The second significant line of code loads the code that is to be tested. It does not matter to TestBench how the code is loaded.
+
+TestBench can be used as soon as a test initialization file is added to the project.
+
+Running a Test File with Ruby
+-----------------------------
+
+At this point, a test file can be added to the project. The most common location where TestBench users place automated test files is within the +test/automated+ directory. For instance, the following file could be placed at +test/automated/some_test_file.rb+:
+
+[source,ruby]
+----
+# Begin test/automated/some_test_file.rb
+
+require_relative '../test_init'
+
+context "Some Context" do
+  test "Some test" do
+    assert(true)
+  end
+
+  context "Inner Context" do
+    test "Some other test" do
+      assert(false) # Will fail!
+    end
+  end
+end
+
+# End test/automated/some_test_file.rb
+----
+
+image::/doc/test-bench-run-ruby.png[Run Test Bench With Ruby]
+
+Running Test Files with the CLI
+-------------------------------
+
+The +ruby+ executable can only run an individual file, so the TestBench CLI is therefore needed run multiple files or an entire test suite. Before the CLI can be used, however, it must be added to the project. The most common way to do this is to add a ruby file, usually at +test/automated.rb+, that invokes the CLI:
+
+[source,ruby]
+----
+# Begin test/automated.rb
+
+require_relative './test_init'
+
+TestBench::CLI.(tests_directory: 'test/automated')
+
+# End test/automated.rb
+----
+
+[IMPORTANT]
+====
+The tests directory specified above, +test/automated+, serves as a default location to search for test files, and as such should always run the project's entire test suite. The CLI can also be instructed to run individual test files (or directories containing test files). See below.
+====
+
+To run individual files, pass the test files as command-line arguments:
+
+image::/doc/cli-run-test-files.png[CLI: Run Test Files]
+
+Directories that contain test files (even those nested under subdirectories) can also be supplied:
+
+image::/doc/cli-run-directory.png[CLI: Run Directory]
+
+Finally, test files and directories can be piped into the CLI via standard input ("stdin"):
+
+image::/doc/cli-stdin.png[CLI: Standard Input]
+
+CLI: Command-line Switches
+--------------------------
+
+The CLI also accepts command-line switches that configure how TestBench operates. Each of the switches also has a corresponding environment variable which allows for TestBench to be configured for a local development environment.
+
+Invoking the CLI with the +--help+ or +-h+ arguments will cause the CLI to print its documentation and then exit:
+
+image::/doc/cli-help.png[CLI Help]
+
