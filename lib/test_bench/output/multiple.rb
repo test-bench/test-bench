@@ -8,6 +8,18 @@ module TestBench
       end
       attr_writer :outputs
 
+      def self.build(*outputs)
+        outputs = Array(outputs)
+
+        instance = new
+
+        outputs.each do |output|
+          instance.register(output)
+        end
+
+        instance
+      end
+
       Fixture::Output.instance_methods.each do |method_name|
         define_method(method_name) do |*args|
           outputs.map do |output|
