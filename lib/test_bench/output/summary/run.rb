@@ -19,6 +19,21 @@ module TestBench
         end
         attr_writer :file_count
 
+        def failure_count
+          @failure_count ||= 0
+        end
+        attr_writer :failure_count
+
+        def pass_count
+          @pass_count ||= 0
+        end
+        attr_writer :pass_count
+
+        def test_count
+          @test_count ||= 0
+        end
+        attr_writer :test_count
+
         def timer
           @timer ||= Timer::Substitute.build
         end
@@ -40,6 +55,16 @@ module TestBench
 
         def error(error)
           self.error_count += 1
+        end
+
+        def finish_test(_, result)
+          self.test_count += 1
+
+          if result
+            self.pass_count += 1
+          else
+            self.failure_count += 1
+          end
         end
       end
     end
