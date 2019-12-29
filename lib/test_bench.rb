@@ -13,3 +13,5 @@ require 'test_bench/output/timer/substitute'
 
 require 'test_bench/output'
 require 'test_bench/output/multiple'
+
+require 'test_bench/output/summary/run'
