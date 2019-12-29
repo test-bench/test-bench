@@ -49,6 +49,11 @@ module TestBench
         end
         attr_writer :writer
 
+        def configure(writer: nil, styling: nil, device: nil)
+          Writer.configure(self, writer: writer, device: device, styling: styling)
+          Timer.configure(self)
+        end
+
         def enter_file(_)
           timer.start
 
