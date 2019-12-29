@@ -29,6 +29,11 @@ module TestBench
         end
         attr_writer :pass_count
 
+        def skip_count
+          @skip_count ||= 0
+        end
+        attr_writer :skip_count
+
         def test_count
           @test_count ||= 0
         end
@@ -65,6 +70,10 @@ module TestBench
           else
             self.failure_count += 1
           end
+        end
+
+        def skip_test(_)
+          self.skip_count += 1
         end
       end
     end
