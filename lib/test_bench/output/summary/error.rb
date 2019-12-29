@@ -18,9 +18,19 @@ module TestBench
           files << file
         end
 
+        def error(error)
+          unless current_file.nil?
+            current_file.error(error)
+          end
+        end
+
         File = Struct.new(:path, :errors) do
           def self.build(path)
             new(path, [])
+          end
+
+          def error(error)
+            self.errors << error
           end
         end
       end
