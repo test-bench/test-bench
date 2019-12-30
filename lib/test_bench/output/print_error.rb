@@ -21,6 +21,16 @@ module TestBench
       def call(error)
         writer.escape_code(:red)
 
+        if reverse_backtraces && error.backtrace.length > 1
+          writer
+            .indent
+            .escape_code(:bold)
+            .text("Traceback")
+            .escape_code(:reset_intensity)
+            .text(" (most recent call last):")
+            .newline
+        end
+
         error(error)
 
         writer
@@ -30,6 +40,9 @@ module TestBench
 
       def error(error)
         if reverse_backtraces
+          cause(error)
+          backtrace(error)
+          message(error)
         else
           message(error)
           backtrace(error)
@@ -60,9 +73,23 @@ module TestBench
 
         backtrace = error.backtrace[1..-1]
 
-        error_backtrace_iterator = backtrace.each
+        unless reverse_backtraces
+          error_backtrace_iterator = backtrace.each
+        else
+          frame_count = backtrace.count
 
-        error_backtrace_iterator.each do |frame, _|
+          number_width = frame_count.to_s.each_char.count
+
+          error_backtrace_iterator = backtrace.reverse_each.map.with_index do |frame, index|
+            ordinal = frame_count - index
+
+            ordinal = ordinal.to_s.rjust(number_width, ' ')
+
+            [frame, ordinal]
+          end
+        end
+
+        error_backtrace_iterator.each do |frame, ordinal|
           omit = omit_backtrace_pattern.match?(frame)
 
           next if omit && omitting
@@ -74,6 +101,12 @@ module TestBench
           if omit
             omitting = true
 
+            if reverse_backtraces
+              ordinal.gsub!(/[[:digit:]]/, '?')
+
+              writer.text("#{ordinal}: ")
+            end
+
             writer
               .escape_code(:faint)
               .escape_code(:italic)
@@ -83,6 +116,10 @@ module TestBench
 
           else
             omitting = false
+
+            if reverse_backtraces
+              writer.text("#{ordinal}: ")
+            end
 
             writer.text("from #{frame}")
           end
