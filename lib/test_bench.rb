@@ -16,3 +16,5 @@ require 'test_bench/output/multiple'
 
 require 'test_bench/output/summary/error'
 require 'test_bench/output/summary/run'
+
+require 'test_bench/output/print_error'
