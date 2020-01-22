@@ -24,6 +24,14 @@ module TestBench
 
           self.file_count += 1
         end
+
+        def exit_file(_, _)
+          elapsed_time = timer.stop
+
+          self.elapsed_time += elapsed_time
+
+          elapsed_time
+        end
       end
     end
   end
