@@ -12,3 +12,4 @@ require 'test_bench/output/timer'
 require 'test_bench/output/timer/substitute'
 
 require 'test_bench/output'
+require 'test_bench/output/multiple'
