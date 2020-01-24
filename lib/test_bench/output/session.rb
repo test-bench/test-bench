@@ -39,6 +39,36 @@ module TestBench
         end
       end
 
+      def start_fixture(fixture)
+        if verbose
+          writer
+            .indent
+            .escape_code(:cyan)
+            .text("Starting fixture (Fixture: #{fixture.class.inspect})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        end
+      end
+
+      def finish_fixture(fixture, result)
+        if verbose
+          writer
+            .indent
+            .escape_code(:magenta)
+            .text("Finished fixture (Fixture: #{fixture.class.inspect}, Result: #{self.class.result_text(result)})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.decrease_indentation
+
+          if writer.indentation_depth.zero?
+            writer.newline
+          end
+        end
+      end
+
       def enter_context(title)
         return if title.nil?
 
