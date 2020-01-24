@@ -66,6 +66,57 @@ module TestBench
         end
       end
 
+      def start_test(title)
+        if verbose
+          title = title.nil? ? '(no title)' : title.inspect
+
+          writer
+            .indent
+            .escape_code(:cyan)
+            .text("Starting test #{title}")
+            .escape_code(:reset_fg)
+            .newline
+        end
+
+        writer.increase_indentation
+      end
+
+      def finish_test(title, result)
+        writer.decrease_indentation
+
+        if title.nil? && result
+          return unless verbose
+        end
+
+        title ||= Defaults.test_title
+
+        writer.indent
+
+        if result
+          writer.escape_code(:green)
+        else
+          writer
+            .escape_code(:bold)
+            .escape_code(:red)
+        end
+
+        writer.text(title)
+
+        unless result
+          writer.escape_code(:reset_intensity)
+        end
+
+        writer
+          .escape_code(:reset_fg)
+          .newline
+      end
+
+      def skip_test(title)
+        title ||= Defaults.test_title
+
+        skip_context(title)
+      end
+
       def comment(text)
         writer
           .indent
@@ -78,6 +129,10 @@ module TestBench
       end
 
       module Defaults
+        def self.test_title
+          'Test'
+        end
+
         def self.verbose
           false
         end
