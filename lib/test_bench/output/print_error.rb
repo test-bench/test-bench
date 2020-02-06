@@ -18,6 +18,27 @@ module TestBench
       end
       attr_writer :writer
 
+      def self.build(**args)
+        instance = new
+        instance.configure(**args)
+        instance
+      end
+
+      def self.configure(receiver, attr_name: nil, **args)
+        attr_name ||= :print_error
+
+        instance = build(**args)
+        receiver.public_send(:"#{attr_name}=", instance)
+        instance
+      end
+
+      def configure(omit_backtrace_pattern: nil, reverse_backtraces: nil, writer: nil, styling: nil, device: nil)
+        self.omit_backtrace_pattern = omit_backtrace_pattern unless omit_backtrace_pattern.nil?
+        self.reverse_backtraces = reverse_backtraces unless reverse_backtraces.nil?
+
+        Writer.configure(self, writer: writer, styling: styling, device: device)
+      end
+
       def call(error)
         writer.escape_code(:red)
 
