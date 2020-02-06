@@ -8,6 +8,11 @@ module TestBench
       end
       attr_writer :writer
 
+      def print_error
+        @print_error ||= PrintError.new
+      end
+      attr_writer :print_error
+
       def verbose
         instance_variable_defined?(:@verbose) ?
           @verbose :
@@ -19,6 +24,8 @@ module TestBench
         @previous_byte_offset ||= 0
       end
       attr_writer :previous_byte_offset
+
+      attr_accessor :previous_error
 
       def enter_file(path)
         writer
@@ -163,6 +170,10 @@ module TestBench
         writer
           .escape_code(:reset_fg)
           .newline
+
+        unless result || previous_error.nil?
+          print_previous_error
+        end
       end
 
       def skip_test(title)
@@ -176,6 +187,24 @@ module TestBench
           .indent
           .text(text)
           .newline
+      end
+
+      def error(error)
+        self.previous_error = error
+      end
+
+      def print_previous_error
+        writer.increase_indentation
+
+        print_previous_error!
+
+        writer.decrease_indentation
+      end
+
+      def print_previous_error!
+        print_error.(previous_error)
+
+        self.previous_error = nil
       end
 
       def self.result_text(result)
