@@ -15,6 +15,30 @@ module TestBench
       end
       attr_writer :verbose
 
+      def previous_byte_offset
+        @previous_byte_offset ||= 0
+      end
+      attr_writer :previous_byte_offset
+
+      def enter_file(path)
+        writer
+          .text("Running #{path}")
+          .newline
+
+        self.previous_byte_offset = writer.byte_offset
+      end
+
+      def exit_file(_, _)
+        if writer.byte_offset == previous_byte_offset
+          writer
+            .escape_code(:faint)
+            .text("(Nothing written)")
+            .escape_code(:reset_intensity)
+            .newline
+            .newline
+        end
+      end
+
       def enter_context(title)
         return if title.nil?
 
