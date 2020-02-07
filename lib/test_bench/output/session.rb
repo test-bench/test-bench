@@ -81,6 +81,10 @@ module TestBench
           print_previous_error!
         end
 
+        unless result || assert_block_failure_details.nil?
+          print_assert_block_failure_details
+        end
+
         if verbose
           writer
             .indent
