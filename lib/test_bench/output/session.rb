@@ -27,6 +27,11 @@ module TestBench
 
       attr_accessor :previous_error
 
+      def assert_block_depth
+        @assert_block_depth ||= 0
+      end
+      attr_writer :assert_block_depth
+
       def enter_file(path)
         writer
           .text("Running #{path}")
@@ -204,6 +209,42 @@ module TestBench
           .indent
           .text(text)
           .newline
+      end
+
+      def enter_assert_block(caller_location)
+        self.assert_block_depth += 1
+
+        if verbose
+          writer
+            .indent
+            .escape_code(:blue)
+            .text("Entering assert block (Caller Location: #{caller_location}, Depth: #{assert_block_depth})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        elsif assert_block_depth == 1
+          writer.start_capture
+        end
+      end
+
+      def exit_assert_block(caller_location, result)
+        if writer.capturing? && assert_block_depth == 1
+          writer.stop_capture
+        end
+
+        if verbose
+          writer.decrease_indentation
+
+          writer
+            .indent
+            .escape_code(:cyan)
+            .text("Exited assert block (Caller Location: #{caller_location}, Depth: #{assert_block_depth}, Result: #{self.class.result_text(result)})")
+            .escape_code(:reset_fg)
+            .newline
+        end
+
+        self.assert_block_depth -= 1
       end
 
       def error(error)
