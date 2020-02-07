@@ -35,7 +35,13 @@ module TestBench
         self.previous_byte_offset = writer.byte_offset
       end
 
-      def exit_file(_, _)
+      def exit_file(path, result)
+        unless result || previous_error.nil?
+          print_previous_error!
+
+          writer.newline
+        end
+
         if writer.byte_offset == previous_byte_offset
           writer
             .escape_code(:faint)
