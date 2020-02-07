@@ -46,6 +46,10 @@ module TestBench
         unless result || previous_error.nil?
           print_previous_error!
 
+          unless assert_block_failure_details.nil?
+            print_assert_block_failure_details
+          end
+
           writer.newline
         end
 
