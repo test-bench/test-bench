@@ -8,6 +8,11 @@ module TestBench
       end
       attr_writer :writer
 
+      def print_error
+        @print_error ||= PrintError.new
+      end
+      attr_writer :print_error
+
       def verbose
         instance_variable_defined?(:@verbose) ?
           @verbose :
@@ -20,6 +25,8 @@ module TestBench
       end
       attr_writer :previous_byte_offset
 
+      attr_accessor :previous_error
+
       def enter_file(path)
         writer
           .text("Running #{path}")
@@ -28,7 +35,13 @@ module TestBench
         self.previous_byte_offset = writer.byte_offset
       end
 
-      def exit_file(_, _)
+      def exit_file(path, result)
+        unless result || previous_error.nil?
+          print_previous_error!
+
+          writer.newline
+        end
+
         if writer.byte_offset == previous_byte_offset
           writer
             .escape_code(:faint)
@@ -53,6 +66,10 @@ module TestBench
       end
 
       def finish_fixture(fixture, result)
+        unless result || previous_error.nil?
+          print_previous_error!
+        end
+
         if verbose
           writer
             .indent
@@ -98,9 +115,16 @@ module TestBench
       end
 
       def exit_context(title, result)
-        return if title.nil?
+        if title.nil?
+          print_previous_error! unless previous_error.nil?
+          return
+        end
 
         writer.decrease_indentation
+
+        unless result || previous_error.nil?
+          print_previous_error
+        end
 
         if verbose
           writer
@@ -163,6 +187,10 @@ module TestBench
         writer
           .escape_code(:reset_fg)
           .newline
+
+        unless result || previous_error.nil?
+          print_previous_error
+        end
       end
 
       def skip_test(title)
@@ -176,6 +204,24 @@ module TestBench
           .indent
           .text(text)
           .newline
+      end
+
+      def error(error)
+        self.previous_error = error
+      end
+
+      def print_previous_error
+        writer.increase_indentation
+
+        print_previous_error!
+
+        writer.decrease_indentation
+      end
+
+      def print_previous_error!
+        print_error.(previous_error)
+
+        self.previous_error = nil
       end
 
       def self.result_text(result)
