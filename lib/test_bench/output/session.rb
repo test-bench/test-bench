@@ -105,9 +105,16 @@ module TestBench
       end
 
       def exit_context(title, result)
-        return if title.nil?
+        if title.nil?
+          print_previous_error! unless previous_error.nil?
+          return
+        end
 
         writer.decrease_indentation
+
+        unless result || previous_error.nil?
+          print_previous_error
+        end
 
         if verbose
           writer
