@@ -27,6 +27,13 @@ module TestBench
 
       attr_accessor :previous_error
 
+      def assert_block_depth
+        @assert_block_depth ||= 0
+      end
+      attr_writer :assert_block_depth
+
+      attr_accessor :assert_block_failure_details
+
       def enter_file(path)
         writer
           .text("Running #{path}")
@@ -38,6 +45,10 @@ module TestBench
       def exit_file(path, result)
         unless result || previous_error.nil?
           print_previous_error!
+
+          unless assert_block_failure_details.nil?
+            print_assert_block_failure_details
+          end
 
           writer.newline
         end
@@ -68,6 +79,10 @@ module TestBench
       def finish_fixture(fixture, result)
         unless result || previous_error.nil?
           print_previous_error!
+        end
+
+        unless result || assert_block_failure_details.nil?
+          print_assert_block_failure_details
         end
 
         if verbose
@@ -124,6 +139,10 @@ module TestBench
 
         unless result || previous_error.nil?
           print_previous_error
+        end
+
+        unless result || assert_block_failure_details.nil?
+          print_assert_block_failure_details
         end
 
         if verbose
@@ -191,6 +210,10 @@ module TestBench
         unless result || previous_error.nil?
           print_previous_error
         end
+
+        unless result || assert_block_failure_details.nil?
+          print_assert_block_failure_details
+        end
       end
 
       def skip_test(title)
@@ -204,6 +227,57 @@ module TestBench
           .indent
           .text(text)
           .newline
+      end
+
+      def enter_assert_block(caller_location)
+        self.assert_block_depth += 1
+
+        if verbose
+          writer
+            .indent
+            .escape_code(:blue)
+            .text("Entering assert block (Caller Location: #{caller_location}, Depth: #{assert_block_depth})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        elsif assert_block_depth == 1
+          writer.increase_indentation
+
+          writer.start_capture
+        end
+      end
+
+      def exit_assert_block(caller_location, result)
+        unless result || previous_error.nil?
+          print_previous_error!
+
+          if $!.instance_of?(SystemExit)
+            assertion_failure = Fixture::AssertionFailure.build(caller_location)
+            self.previous_error = assertion_failure
+          end
+        end
+
+        if verbose
+          writer.decrease_indentation
+
+          writer
+            .indent
+            .escape_code(:cyan)
+            .text("Exited assert block (Caller Location: #{caller_location}, Depth: #{assert_block_depth}, Result: #{self.class.result_text(result)})")
+            .escape_code(:reset_fg)
+            .newline
+        elsif writer.capturing? && assert_block_depth == 1
+          captured_text = writer.stop_capture
+
+          unless result
+            self.assert_block_failure_details = captured_text
+          end
+
+          writer.decrease_indentation
+        end
+
+        self.assert_block_depth -= 1
       end
 
       def error(error)
@@ -222,6 +296,14 @@ module TestBench
         print_error.(previous_error)
 
         self.previous_error = nil
+      end
+
+      def print_assert_block_failure_details
+        assert_block_failure_details.each_line do |text|
+          writer.text(text)
+        end
+
+        self.assert_block_failure_details = nil
       end
 
       def self.result_text(result)
