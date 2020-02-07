@@ -66,6 +66,10 @@ module TestBench
       end
 
       def finish_fixture(fixture, result)
+        unless result || previous_error.nil?
+          print_previous_error!
+        end
+
         if verbose
           writer
             .indent
