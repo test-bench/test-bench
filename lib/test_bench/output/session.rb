@@ -34,6 +34,14 @@ module TestBench
 
       attr_accessor :assert_block_failure_details
 
+      def configure(verbose: nil, omit_backtrace_pattern: nil, reverse_backtraces: nil, writer: nil, styling: nil, device: nil)
+        self.verbose = verbose unless verbose.nil?
+
+        Writer.configure(self, writer: writer, styling: styling, device: device)
+
+        print_error.configure(omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces, writer: self.writer)
+      end
+
       def enter_file(path)
         writer
           .text("Running #{path}")
