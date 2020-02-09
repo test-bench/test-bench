@@ -18,6 +18,12 @@ module TestBench
           files << file
         end
 
+        def exit_file(path, result)
+          if result
+            files.pop
+          end
+        end
+
         def error(error)
           unless current_file.nil?
             current_file.error(error)
