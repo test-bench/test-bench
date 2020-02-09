@@ -23,3 +23,4 @@ require 'test_bench/output/session'
 
 require 'test_bench/output/levels/none'
 require 'test_bench/output/levels/summary'
+require 'test_bench/output/levels/failure'
