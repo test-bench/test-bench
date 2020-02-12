@@ -3,6 +3,11 @@ module TestBench
     class ParseArguments
       attr_reader :argv
 
+      def env
+        @env ||= {}
+      end
+      attr_writer :env
+
       def output_device
         @output_device ||= StringIO.new
       end
@@ -36,6 +41,24 @@ TEXT
 
             raise SystemExit.new(0)
           end
+
+          parser.separator('')
+          parser.separator("Configuration Options")
+
+          parser.on('-a', '--[no-]abort-on-error', %{Exit immediately after any test failure or error (Default: #{TestBench::Defaults.abort_on_error ? 'on' : 'off'})}) do |abort_on_error|
+            env['TEST_BENCH_ABORT_ON_ERROR'] = abort_on_error ? 'on' : 'off'
+          end
+
+          parser.separator(<<TEXT)
+
+Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
+If no paths are given, a default path (#{Defaults.tests_directory}) is scanned for test files.
+
+The following environment variables can also control execution:
+
+#{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
+
+TEXT
         end
       end
 
