@@ -28,11 +28,27 @@ module TestBench
 
             raise SystemExit.new(0)
           end
+
+          parser.on('-V', '--version', "Print version and exit successfully") do
+            output_device.puts <<TEXT
+test-bench (#{self.class.program_name}) version #{self.class.version}
+TEXT
+
+            raise SystemExit.new(0)
+          end
         end
       end
 
       def self.program_name
         $PROGRAM_NAME
+      end
+
+      def self.version
+        if Object.const_defined?(:Gem)
+          spec = Gem.loaded_specs['test_bench']
+        end
+
+        spec&.version || '(unknown)'
       end
 
       module Defaults
