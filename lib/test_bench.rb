@@ -34,3 +34,6 @@ require 'test_bench/underscore_variants'
 
 require 'test_bench/run'
 require 'test_bench/run/substitute'
+
+require 'test_bench/cli/parse_arguments'
+require 'test_bench/cli'
