@@ -32,7 +32,17 @@ module TestBench
     end
 
     def path(path)
-      if File.exist?(path)
+      if File.directory?(path)
+        directory(path)
+      elsif File.exist?(path)
+        file(path)
+      end
+    end
+
+    def directory(path)
+      glob_pattern = File.join(path, '**/*.rb')
+
+      Dir.glob(glob_pattern).sort.each do |path|
         file(path)
       end
     end
