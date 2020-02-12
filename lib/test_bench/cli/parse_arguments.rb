@@ -71,6 +71,14 @@ module TestBench
             env['TEST_BENCH_OMIT_BACKTRACE_PATTERN'] = pattern_text
           end
 
+          parser.on('-l', '--output-level [none|summary|failure|pass|debug]', %{Sets output level (Default: #{Output::Build::Defaults.level})}) do |level_text|
+            level = level_text.to_sym
+
+            Output::Build.assure_level(level)
+
+            env['TEST_BENCH_OUTPUT_LEVEL'] = level_text
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -81,6 +89,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
           #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
           #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
+          #{parser.summary_indent}TEST_BENCH_OUTPUT_LEVEL            Same as -l or --output-level
 
           TEXT
         end
