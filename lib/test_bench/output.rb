@@ -9,6 +9,10 @@ module TestBench
       end
     end
 
+    def self.build(**args)
+      Build.(**args)
+    end
+
     def configure
     end
 
