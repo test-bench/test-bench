@@ -26,3 +26,6 @@ require 'test_bench/output/buffer'
 require 'test_bench/output/log'
 
 require 'test_bench/output'
+
+require 'test_bench/test_bench'
+require 'test_bench/deactivation_variants'
