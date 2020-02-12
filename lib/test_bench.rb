@@ -31,3 +31,6 @@ require 'test_bench/output/build'
 
 require 'test_bench/test_bench'
 require 'test_bench/underscore_variants'
+
+require 'test_bench/run'
+require 'test_bench/run/substitute'
