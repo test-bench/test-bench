@@ -39,6 +39,28 @@ module TestBench
       instance
     end
 
+    def self.call(*paths, session: nil, **args, &block)
+      instance = build(*paths, session: session, **args)
+
+      if block.nil?
+        instance.()
+      else
+        instance.() do
+          unless session.nil?
+            original_session = TestBench.session
+            TestBench.session = session
+          end
+
+          block.(instance)
+
+        ensure
+          unless original_session.nil?
+            TestBench.session = original_session
+          end
+        end
+      end
+    end
+
     def call(&block)
       session.start
 
