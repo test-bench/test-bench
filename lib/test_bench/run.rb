@@ -18,6 +18,27 @@ module TestBench
       @paths = Array(paths)
     end
 
+    def self.build(*paths, exclude_file_pattern: nil, session: nil, output: nil)
+      session ||= TestBench.session
+
+      instance = new(*paths)
+
+      instance.exclude_file_pattern = exclude_file_pattern unless exclude_file_pattern.nil?
+
+      Session.configure(instance, session: session)
+      instance.session.output = output unless output.nil?
+
+      instance
+    end
+
+    def self.configure(receiver, *paths, attr_name: nil, **args)
+      attr_name ||= :run
+
+      instance = build(*paths, **args)
+      receiver.public_send(:"#{attr_name}=", instance)
+      instance
+    end
+
     def call(&block)
       session.start
 
