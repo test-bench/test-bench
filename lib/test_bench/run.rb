@@ -1,5 +1,7 @@
 module TestBench
   class Run
+    Error = Class.new(RuntimeError)
+
     def session
       @session ||= Fixture::Session::Substitute.build
     end
@@ -36,6 +38,8 @@ module TestBench
         directory(path)
       elsif File.exist?(path)
         file(path)
+      else
+        raise Error, "Path not found (Path: #{path.inspect})"
       end
     end
 
