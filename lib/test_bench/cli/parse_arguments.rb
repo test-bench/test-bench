@@ -19,6 +19,21 @@ module TestBench
         @argv = argv
       end
 
+      def self.build(argv=nil, env: nil)
+        argv ||= ::ARGV
+        env ||= ::ENV
+
+        instance = new(argv)
+        instance.output_device = Output::Writer::Defaults.device
+        instance.env = env
+        instance
+      end
+
+      def self.call(argv=nil, env: nil)
+        instance = build(argv, env: env)
+        instance.()
+      end
+
       def call
         option_parser.parse(argv)
       end
