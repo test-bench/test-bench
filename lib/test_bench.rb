@@ -28,3 +28,5 @@ require 'test_bench/output/levels/pass'
 require 'test_bench/output/levels/debug'
 
 require 'test_bench/output/build'
+
+require 'test_bench/test_bench'
