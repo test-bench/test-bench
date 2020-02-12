@@ -26,3 +26,5 @@ require 'test_bench/output/levels/summary'
 require 'test_bench/output/levels/failure'
 require 'test_bench/output/levels/pass'
 require 'test_bench/output/levels/debug'
+
+require 'test_bench/output/build'
