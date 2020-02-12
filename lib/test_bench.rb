@@ -31,3 +31,4 @@ require 'test_bench/test_bench'
 require 'test_bench/deactivation_variants'
 
 require 'test_bench/run'
+require 'test_bench/run/substitute'
