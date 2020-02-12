@@ -8,6 +8,18 @@ module TestBench
   end
   singleton_class.attr_writer(:session)
 
+  def self.fixture(session=nil, receiver: nil)
+    session ||= self.session
+    receiver ||= Object.new
+
+    receiver.extend(Fixture)
+    receiver.extend(DeactivationVariants)
+
+    receiver.test_session = session
+
+    receiver
+  end
+
   def self.build_session(output: nil, abort_on_error: nil, **args)
     output ||= Output.build
     error_policy = session_error_policy(abort_on_error)
