@@ -1,6 +1,8 @@
 module TestBench
   module CLI
     class ParseArguments
+      Error = Class.new(RuntimeError)
+
       attr_reader :argv
 
       def env
@@ -49,6 +51,16 @@ module TestBench
             env['TEST_BENCH_ABORT_ON_ERROR'] = abort_on_error ? 'on' : 'off'
           end
 
+          parser.on('-x', '--[no-]exclude PATTERN', %{Do not execute test files matching PATTERN (Default: #{Run::Defaults.exclude_file_pattern.inspect})}) do |pattern_text|
+            if pattern_text == false
+              pattern_text = self.none_pattern
+            end
+
+            assure_pattern(pattern_text)
+
+            env['TEST_BENCH_EXCLUDE_FILE_PATTERN'] = pattern_text
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -57,9 +69,20 @@ module TestBench
           The following environment variables can also control execution:
 
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
+          #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
 
           TEXT
         end
+      end
+
+      def assure_pattern(pattern_text)
+        Regexp.new(pattern_text)
+      rescue RegexpError
+        raise Error, "Invalid regular expression pattern (Pattern: #{pattern_text.inspect})"
+      end
+
+      def none_pattern
+        /\z./
       end
 
       def self.program_name
