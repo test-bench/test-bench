@@ -5,6 +5,11 @@ module TestBench
     end
     attr_writer :session
 
+    def exclude_pattern
+      @exclude_pattern ||= Defaults.exclude_pattern
+    end
+    attr_writer :exclude_pattern
+
     attr_reader :paths
 
     def initialize(*paths)
@@ -27,13 +32,35 @@ module TestBench
     end
 
     def path(path)
-      if File.exist?(path)
+      if File.directory?(path)
+        directory(path)
+      elsif File.exist?(path)
+        file(path)
+      end
+    end
+
+    def directory(path)
+      glob_pattern = File.join(path, '**/*.rb')
+
+      Dir[glob_pattern].sort.each do |path|
+        next if exclude_pattern.match?(path)
+
         file(path)
       end
     end
 
     def file(path)
       session.load(path)
+    end
+
+    module Defaults
+      def self.exclude_pattern
+        pattern = ENV.fetch('TEST_BENCH_EXCLUDE_FILE_PATTERN') do
+          '_init.rb$'
+        end
+
+        Regexp.new(pattern)
+      end
     end
   end
 end
