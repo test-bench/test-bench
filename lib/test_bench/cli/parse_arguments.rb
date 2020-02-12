@@ -61,6 +61,16 @@ module TestBench
             env['TEST_BENCH_EXCLUDE_FILE_PATTERN'] = pattern_text
           end
 
+          parser.on('-o', '--[no-]omit-backtrace PATTERN', %{Omit backtrace frames matching PATTERN (Default: #{Output::PrintError::Defaults.omit_backtrace_pattern.inspect})}) do |pattern_text|
+            if pattern_text == false
+              pattern_text = self.none_pattern
+            end
+
+            assure_pattern(pattern_text)
+
+            env['TEST_BENCH_OMIT_BACKTRACE_PATTERN'] = pattern_text
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -70,6 +80,7 @@ module TestBench
 
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
           #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
+          #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
 
           TEXT
         end
