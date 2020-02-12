@@ -93,6 +93,10 @@ module TestBench
             env['TEST_BENCH_FAIL_DEACTIVATED_TESTS'] = !permit_deactivated_tests ? 'on' : 'off'
           end
 
+          parser.on('-r', '--[no-]reverse-backtraces', %{Reverse order of backtraces when printing errors (Default: #{Output::PrintError::Defaults.reverse_backtraces ? 'on' : 'off'})}) do |reverse_backtraces|
+            env['TEST_BENCH_REVERSE_BACKTRACES'] = reverse_backtraces ? 'on' : 'off'
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -106,6 +110,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_OUTPUT_LEVEL            Same as -l or --output-level
           #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
           #{parser.summary_indent}TEST_BENCH_FAIL_DEACTIVATED_TESTS  Opposite of -p or --permit-deactivated-tests
+          #{parser.summary_indent}TEST_BENCH_REVERSE_BACKTRACES      Same as -r or --reverse-backtraces
 
           TEXT
 
