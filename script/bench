@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'test_bench'
+rescue LoadError => load_error
+end
+
+unless load_error.nil?
+  if File.exist?('init.rb')
+    require_relative '../init.rb'
+    require 'test_bench'
+
+    ENV['BOOTSTRAP'] ||= 'off'
+  else
+    raise load_error
+  end
+end
+
+TestBench::CLI.()
