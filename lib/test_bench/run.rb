@@ -39,6 +39,11 @@ module TestBench
       instance
     end
 
+    def self.call(*paths, **args, &block)
+      instance = build(*paths, **args)
+      instance.(&block)
+    end
+
     def call(&block)
       session.start
 
