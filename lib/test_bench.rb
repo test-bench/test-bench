@@ -22,3 +22,4 @@ require 'test_bench/output/print_error'
 require 'test_bench/output/session'
 
 require 'test_bench/output/levels/none'
+require 'test_bench/output/levels/summary'
