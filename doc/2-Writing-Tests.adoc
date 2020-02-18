@@ -186,11 +186,17 @@ As is evident from the examples, +assert_raises+ and +refute_raises+ have _three
 Block-form Assertions
 ^^^^^^^^^^^^^^^^^^^^^
 
-+assert+ can take an optional block containing test code. All the tests performed by the block must pass in order to satisfy the assertion. By default, any test output produced by the block is printed only when the assertion fails, allowing the block to convey useful details about the failure. The purpose of this block-form syntax is to allow for specialized assertions. In fact, +assert_raises+ and +refute_raises+ are themselves specialized assertions that both make use of the block-form of +assert+ in order to provide information about what error was expected, what error (if any) was raised, and more.
+The block-form assertion builds on the basic TestBench features to provide domain-specific assertions composed of lower-level assertions, as well as context blocks, test blocks, comments, and all other basic TestBench features.
 
-NOTE: When a block is passed to +assert+, a positional argument _must not_ be passed along with it.
+In addition to its more basic form, +assert+ can also take an optional block containing test code. All of TestBench's facilities can be used inside a block-form assertion, including `context`, `test`, `assert`, `refute`, `comment`, etc. All tests performed by the block must pass in order to satisfy the assertion.
 
-IMPORTANT: The block given to a block-form assertion _must_ perform at least one assertion, otherwise the block will fail.
+By default, any test output produced by the block is printed only when the assertion fails, allowing the block to convey useful details about the failure.
+
+When a block is passed to +assert+, a positional argument _must not_ be passed along with it.
+
+The block given to a block-form assertion _must_ perform at least one assertion, otherwise the block will fail.
+
+TestBench itself uses block-form assertions to compose the +assert_raises+ and +refute_raises+ assertions.
 
 An example of a block-form assertion:
 
@@ -221,9 +227,7 @@ context "Block-form Assertion Example" do
 end
 ----
 
-[IMPORTANT]
-====
-In the above example, an assertion failure would not refer to the correct source code file and line number. In order to correct this, all assertion methods accept an optional +caller_location+ keyword argument, which is set to the caller location by default:
+In the above example, an assertion failure location would not refer to the correct source code file and line number. An optional +caller_location+ keyword argument can be passed to the assertion to specify the actual failure location.
 
 [source,ruby]
 ----
@@ -235,7 +239,6 @@ def assert_json(string, caller_location: nil)
   end
 end
 ----
-====
 
 Here is the output of running the above test. Notice that, while the passing test case prints no output, the failing test case prints out detailed failure information:
 
