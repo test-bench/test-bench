@@ -33,10 +33,6 @@ end
 Randomizing the Execution Order
 -------------------------------
 
-TestBench executes test files as soon as they are loaded, and thus the tests within cannot be reordered. However, the execution order of the test files themselves _can_ be randomized with a bit of shell scripting. The `find` command line utility can scan the test directory for test files and print them to the standard output device ("stdout"). On Linux, the `shuf` command from coreutils can randomize the order of any text piped into it. Note that on OSX, the coreutils package must be installed via e.g. homebrew, and the command will likely be aliased to `gshuf`. Finally, the `bench` executable can execute file names fed in through a pipe. Combining `find`, `shuf`, and `bench` will allow execution order to be randomized:
-
-- - -
-
 TestBench executes test files as soon as they are loaded. The load order, and thus the execution order, is Ruby's decision to make. However, your operating system already has facilities for changing the order of execution, and thus such features don't belong in a test framework.
 
 Using the operating system to do the work that belongs in the operating system also gives you an opportunity to learn a little bit more about using your operating system.
