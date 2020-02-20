@@ -1,10 +1,12 @@
 Recipes
 =======
 
-Using TestBench Without Activation
-----------------------------------
+Using TestBench Without Monkey Patching
+---------------------------------------
 
-TestBench can be used without activating the library. Test scripts just need to wrap test code in a block given to `TestBench.evaluate`:
+TestBench can be used without _activating_ the library. Activating TestBench causes Ruby's `main` object, the Ruby _runner_, to be modified, or _monkey patched_.
+
+To use TestBench without activating it, wrap test code in an outer `TestBench.evaluate` block.
 
 ```ruby
 # Begin test/automated/example.rb
@@ -29,6 +31,8 @@ end
 
 # End test/automated/example.rb
 ```
+
+TestBench doesn't modify Ruby's `Object` class. It modifies Ruby's `main` object, which is vastly less harmful and almost always benign. The `main` object is just the runner object where Ruby executes script files. Adding TestBench's rather small API to the runner is extremely unlikely to cause the problems experienced when test frameworks presume to modify `Object`, `BasicObject`, or `Kernel`, which causes sweeping changes to the entire Ruby environment, and all the classes and objects within it.
 
 Randomizing the Execution Order
 -------------------------------
