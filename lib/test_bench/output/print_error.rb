@@ -26,6 +26,16 @@ module TestBench
 
         writer.escape_code(:red)
 
+        if reverse_backtraces && error.backtrace.length > 1
+          writer
+            .indent
+            .escape_code(:bold)
+            .text("Traceback")
+            .escape_code(:reset_intensity)
+            .text(" (most recent call last):")
+            .newline
+        end
+
         error(error, writer: writer, omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces)
 
         writer
@@ -37,6 +47,9 @@ module TestBench
         reverse_backtraces = self.reverse_backtraces if reverse_backtraces.nil?
 
         if reverse_backtraces
+          error_cause(error, writer: writer, omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces)
+          error_backtrace(error, writer: writer, omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces)
+          error_message(error, writer: writer)
         else
           error_message(error, writer: writer)
           error_backtrace(error, writer: writer, omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces)
@@ -79,9 +92,21 @@ module TestBench
 
         unless reverse_backtraces
           backtrace_iterator = backtrace.each.with_index
+        else
+          frame_count = backtrace.count
+
+          number_width = frame_count.to_s.each_char.count
+
+          backtrace_iterator = backtrace.reverse_each.map.with_index do |location, index|
+            ordinal = frame_count - index
+
+            ordinal = ordinal.to_s.rjust(number_width, ' ')
+
+            [location, ordinal]
+          end
         end
 
-        backtrace_iterator.each do |location, _|
+        backtrace_iterator.each do |location, ordinal|
           omit = omit_backtrace_pattern.match?(location)
 
           next if omit && omitting
@@ -93,6 +118,12 @@ module TestBench
           if omit
             omitting = true
 
+            if reverse_backtraces
+              ordinal.gsub!(/[[:digit:]]/, '?')
+
+              writer.text("#{ordinal}: ")
+            end
+
             writer
               .escape_code(:faint)
               .escape_code(:italic)
@@ -102,6 +133,10 @@ module TestBench
 
           else
             omitting = false
+
+            if reverse_backtraces
+              writer.text("#{ordinal}: ")
+            end
 
             writer.text("from #{location}")
           end
