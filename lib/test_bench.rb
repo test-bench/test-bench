@@ -13,3 +13,5 @@ require 'test_bench/output/writer/dependency'
 
 require 'test_bench/output/timer'
 require 'test_bench/output/timer/substitute'
+
+require 'test_bench/output/print_error'
