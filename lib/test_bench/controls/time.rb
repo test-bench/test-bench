@@ -55,6 +55,24 @@ module TestBench
             "1.111s"
           end
         end
+
+        module PerSecond
+          def self.example
+            elapsed_time = Elapsed.example
+
+            Rational(ocurrences, elapsed_time)
+          end
+
+          def self.ocurrences
+            1
+          end
+
+          module Text
+            def self.example
+              "0.9"
+            end
+          end
+        end
       end
     end
   end
