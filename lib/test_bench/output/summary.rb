@@ -45,8 +45,19 @@ module TestBench
       end
       attr_writer :timer
 
-      def enter_file(_)
+      def errors_by_file
+        @errors_by_file ||= Hash.new do |hash, key|
+          hash[key] = []
+        end
+      end
+      attr_writer :errors_by_file
+
+      attr_accessor :current_file
+
+      def enter_file(file)
         timer.start
+
+        self.current_file = file
       end
 
       def exit_file(_, _)
@@ -71,16 +82,53 @@ module TestBench
         self.skip_count += 1
       end
 
-      def error(_)
+      def error(error)
+        errors_by_file[current_file] << error
+
         self.error_count += 1
       end
 
       def finish(_)
+        error_summary
+
         session_summary
       end
 
       def session_summary
         Session.(file_count: file_count, test_count: test_count, pass_count: pass_count, skip_count: skip_count, failure_count: failure_count, error_count: error_count, elapsed_time: elapsed_time, writer: writer)
+      end
+
+      def error_summary
+        return if errors_by_file.empty?
+
+        writer
+          .escape_code(:bold)
+          .escape_code(:red)
+          .text('Error Summary:')
+          .escape_code(:reset_intensity)
+          .escape_code(:reset_fg)
+          .newline
+
+        errors_by_file.each do |file, errors|
+          error_count = errors.count
+
+          writer
+            .text(error_count.to_s.rjust(4, ' '))
+            .text(": #{file}")
+            .newline
+
+          errors.each do |error|
+            writer
+              .text('      ')
+              .escape_code(:red)
+
+            PrintError.error_message(error, writer: writer)
+
+            writer.escape_code(:reset_fg)
+          end
+        end
+
+        writer.newline
       end
     end
   end
