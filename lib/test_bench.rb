@@ -20,3 +20,4 @@ require 'test_bench/output/summary/error'
 
 require 'test_bench/output/levels/none'
 require 'test_bench/output/levels/summary'
+require 'test_bench/output/levels/failure'
