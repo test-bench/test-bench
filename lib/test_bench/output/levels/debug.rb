@@ -80,6 +80,55 @@ module TestBench
 
           writer.increase_indentation
         end
+
+        def enter_context(title)
+          return if title.nil?
+
+          writer
+            .indent
+            .escape_code(:green)
+            .text(title)
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        end
+
+        def exit_context(title, result)
+          return if title.nil?
+
+          writer.decrease_indentation
+
+          fg_color = result ? :green : :red
+
+          text = "Finished context #{title.inspect} (Result: #{result ? 'pass' : 'failure'})"
+
+          writer
+            .indent
+            .escape_code(:faint)
+            .escape_code(:italic)
+            .escape_code(fg_color)
+            .text(text)
+            .escape_code(:reset_fg)
+            .escape_code(:reset_italic)
+            .escape_code(:reset_intensity)
+            .newline
+
+          writer.newline if writer.indentation_depth.zero?
+        end
+
+        def skip_context(title)
+          return if title.nil?
+
+          writer
+            .indent
+            .escape_code(:yellow)
+            .text(title)
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.newline if writer.indentation_depth.zero?
+        end
       end
     end
   end
