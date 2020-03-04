@@ -129,6 +129,34 @@ module TestBench
 
           writer.newline if writer.indentation_depth.zero?
         end
+
+        def start_fixture(fixture)
+          fixture_class = fixture.class.inspect
+
+          writer
+            .indent
+            .escape_code(:blue)
+            .text("Starting fixture (Fixture: #{fixture_class})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        end
+
+        def finish_fixture(fixture, result)
+          fixture_class = fixture.class.inspect
+
+          writer.decrease_indentation
+
+          writer
+            .indent
+            .escape_code(:magenta)
+            .text("Finished fixture (Fixture: #{fixture_class}, Result: #{result ? 'pass' : 'failure'})")
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.newline if writer.indentation_depth.zero?
+        end
       end
     end
   end
