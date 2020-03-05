@@ -182,6 +182,32 @@ module TestBench
             writer.newline
           end
         end
+
+        def enter_assert_block(caller_location)
+          text = "Entered assert block (Caller Location: #{caller_location})"
+
+          writer
+            .indent
+            .escape_code(:blue)
+            .text(text)
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        end
+
+        def exit_assert_block(caller_location, result)
+          writer.decrease_indentation
+
+          text = "Exited assert block (Caller Location: #{caller_location}, Result: #{result ? 'pass' : 'failure'})"
+
+          writer
+            .indent
+            .escape_code(:cyan)
+            .text(text)
+            .escape_code(:reset_fg)
+            .newline
+        end
       end
     end
   end
