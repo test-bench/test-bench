@@ -15,6 +15,16 @@ module TestBench
         end
         attr_writer :previous_byte_offset
 
+        def assert_block_stack
+          @assert_block_stack ||= AssertBlockStack.new(writer)
+        end
+        attr_writer :assert_block_stack
+
+        def test_stack
+          @test_stack ||= []
+        end
+        attr_writer :test_stack
+
         def comment(text)
           writer
             .indent
@@ -32,7 +42,13 @@ module TestBench
           self.previous_error = nil
         end
 
+        def start_test(_)
+          test_stack.push(true)
+        end
+
         def finish_test(title, result)
+          test_stack.pop
+
           if writer.styling?
             unless result && title.nil?
               writer.indent
@@ -68,6 +84,10 @@ module TestBench
 
             writer.decrease_indentation
           end
+
+          unless result
+            assert_block_stack.print_captured_text
+          end
         end
 
         def skip_test(title)
@@ -89,6 +109,8 @@ module TestBench
         end
 
         def enter_context(title)
+          test_stack.push(false)
+
           return if title.nil?
 
           writer
@@ -102,7 +124,13 @@ module TestBench
         end
 
         def exit_context(title, result)
+          test_stack.pop
+
           print_previous_error unless previous_error.nil?
+
+          unless result
+            assert_block_stack.print_captured_text
+          end
 
           return if title.nil?
 
@@ -132,8 +160,12 @@ module TestBench
           self.previous_byte_offset = writer.byte_offset
         end
 
-        def exit_file(file, _)
+        def exit_file(file, result)
           print_previous_error unless previous_error.nil?
+
+          unless result
+            assert_block_stack.print_captured_text
+          end
 
           unless writer.byte_offset > previous_byte_offset
             writer
@@ -144,6 +176,100 @@ module TestBench
 
             writer.newline
           end
+        end
+
+        def finish_fixture(_, result)
+          print_previous_error unless previous_error.nil?
+
+          unless result
+            assert_block_stack.print_captured_text
+          end
+        end
+
+        def enter_assert_block(_)
+          inside_test = inside_test?
+
+          test_stack.push(false)
+
+          assert_block_stack.push
+
+          writer.increase_indentation
+          writer.increase_indentation if inside_test
+        end
+
+        def exit_assert_block(_, result)
+          test_stack.pop
+
+          print_previous_error unless previous_error.nil?
+
+          unless result
+            assert_block_stack.print_captured_text
+          end
+
+          discard_captured_text = result
+
+          assert_block_stack.pop(discard_captured_text)
+
+          writer.decrease_indentation if inside_test?
+          writer.decrease_indentation
+        end
+
+        def inside_test?
+          test_stack[-1]
+        end
+
+        class AssertBlockStack
+          def stack
+            @stack ||= []
+          end
+
+          attr_accessor :captured_text
+
+          attr_reader :writer
+
+          def initialize(writer)
+            @writer = writer
+          end
+
+          def push
+            capture_text = String.new
+
+            previous_device = writer.device
+
+            writer.device = StringIO.new(capture_text)
+
+            entry = Entry.new(capture_text, previous_device)
+
+            stack.push(entry)
+
+            entry
+          end
+
+          def pop(discard)
+            entry = stack.pop
+
+            writer.device = entry.previous_device
+
+            unless discard
+              self.captured_text = entry.capture_text
+            end
+
+            entry
+          end
+
+          def print_captured_text
+            return if captured_text.nil?
+
+            writer.text(captured_text)
+
+            self.captured_text = nil
+          end
+
+          def inside_test?
+            test_stack[-1]
+          end
+
+          Entry = Struct.new(:capture_text, :previous_device)
         end
       end
     end
