@@ -15,5 +15,7 @@ module TestBench
         summary
       )
     end
+
+    Substitute = Fixture::Output::Substitute
   end
 end
