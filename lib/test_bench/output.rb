@@ -3,5 +3,7 @@ module TestBench
     def self.build(**args)
       Build.(**args)
     end
+
+    Substitute = Fixture::Output::Substitute
   end
 end
