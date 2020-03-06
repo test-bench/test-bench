@@ -10,6 +10,11 @@ module TestBench
 
         attr_accessor :previous_error
 
+        def previous_byte_offset
+          @previous_byte_offset ||= 0
+        end
+        attr_writer :previous_byte_offset
+
         def comment(text)
           writer
             .indent
@@ -114,6 +119,28 @@ module TestBench
             .newline
 
           writer.newline if writer.indentation_depth.zero?
+        end
+
+        def enter_file(file)
+          text = "Running #{file}"
+
+          writer.text(text).newline
+
+          self.previous_byte_offset = writer.byte_offset
+        end
+
+        def exit_file(file, _)
+          print_previous_error unless previous_error.nil?
+
+          unless writer.byte_offset > previous_byte_offset
+            writer
+              .escape_code(:faint)
+              .text("(Nothing written)")
+              .escape_code(:reset_intensity)
+              .newline
+
+            writer.newline
+          end
         end
       end
     end
