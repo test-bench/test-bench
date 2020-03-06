@@ -82,6 +82,42 @@ module TestBench
             writer.text(text).newline
           end
         end
+
+        def enter_context(title)
+          return if title.nil?
+
+          writer
+            .indent
+            .escape_code(:green)
+            .text(title)
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.increase_indentation
+        end
+
+        def exit_context(title, result)
+          print_previous_error unless previous_error.nil?
+
+          return if title.nil?
+
+          writer.decrease_indentation
+
+          writer.newline if writer.indentation_depth.zero?
+        end
+
+        def skip_context(title)
+          return if title.nil?
+
+          writer
+            .indent
+            .escape_code(:yellow)
+            .text(title)
+            .escape_code(:reset_fg)
+            .newline
+
+          writer.newline if writer.indentation_depth.zero?
+        end
       end
     end
   end
