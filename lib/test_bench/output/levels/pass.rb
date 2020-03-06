@@ -8,6 +8,9 @@ module TestBench
 
         include PrintError
 
+        include Output::Summary::Error
+        include Output::Summary::Run
+
         attr_accessor :previous_error
 
         def previous_byte_offset
