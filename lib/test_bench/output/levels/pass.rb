@@ -28,6 +28,18 @@ module TestBench
         end
         attr_writer :test_stack
 
+        def self.build(omit_backtrace_pattern: nil, reverse_backtraces: nil, writer: nil, styling: nil, device: nil)
+          instance = new
+
+          instance.omit_backtrace_pattern = omit_backtrace_pattern unless omit_backtrace_pattern.nil?
+          instance.reverse_backtraces = reverse_backtraces unless reverse_backtraces.nil?
+
+          Writer.configure(instance, writer: writer, styling: styling, device: device)
+          Timer.configure(instance)
+
+          instance
+        end
+
         def comment(text)
           writer
             .indent
