@@ -37,6 +37,14 @@ module TestBench
     end
   end
 
+  def self.context(title=nil, session: nil, &block)
+    evaluate(session: session) do
+      context(title) do
+        instance_exec(&block)
+      end
+    end
+  end
+
   def self.fixture(session=nil, receiver: nil)
     session ||= self.session
     receiver ||= Object.new
