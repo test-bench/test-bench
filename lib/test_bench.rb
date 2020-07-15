@@ -20,3 +20,5 @@ require 'test_bench/output/summary'
 require 'test_bench/output/summary/session'
 
 require 'test_bench/output/batch_data'
+
+require 'test_bench/output/raw'
