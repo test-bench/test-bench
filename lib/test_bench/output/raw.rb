@@ -104,6 +104,13 @@ module TestBench
         print_error(error)
       end
 
+      def comment(text)
+        writer
+          .indent
+          .text(text)
+          .newline
+      end
+
       def result_text(result)
         result ? 'pass' : 'failure'
       end
