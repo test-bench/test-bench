@@ -40,6 +40,34 @@ module TestBench
       end
       attr_writer :previous_byte_offset
 
+      def configure(verbose: nil, detail: nil, omit_backtrace_pattern: nil, reverse_backtraces: nil, writer: nil, device: nil, styling: nil)
+        unless detail.nil?
+          self.class.assure_detail_setting(detail)
+        end
+
+        self.detail_setting = detail unless detail.nil?
+        self.verbose = verbose unless verbose.nil?
+
+        self.omit_backtrace_pattern = omit_backtrace_pattern unless omit_backtrace_pattern.nil?
+        self.reverse_backtraces = reverse_backtraces unless reverse_backtraces.nil?
+
+        Writer.configure(self, writer: writer, styling: styling, device: device)
+      end
+
+      def self.build(verbose: nil, detail: nil, omit_backtrace_pattern: nil, reverse_backtraces: nil, writer: nil, device: nil, styling: nil)
+        instance = new
+        instance.configure(verbose: verbose, detail: detail, omit_backtrace_pattern: omit_backtrace_pattern, reverse_backtraces: reverse_backtraces, writer: writer, device: device, styling: styling)
+        instance
+      end
+
+      def self.configure(receiver, attr_name: nil, **args)
+        attr_name ||= :raw_output
+
+        instance = build(**args)
+        receiver.public_send(:"#{attr_name}=", instance)
+        instance
+      end
+
       def detail?(result=nil)
         result ||= current_batch&.result
 
