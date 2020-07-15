@@ -206,6 +206,45 @@ module TestBench
           .newline
       end
 
+      def start_fixture(fixture, batch_data: nil)
+        batch_starting(batch_data) unless batch_data.nil?
+
+        return unless verbose?
+
+        fixture_class = fixture.class.inspect
+
+        text = "Starting fixture (Fixture: #{fixture_class})"
+
+        writer
+          .indent
+          .escape_code(:blue)
+          .text(text)
+          .escape_code(:reset_fg)
+          .newline
+
+        writer.increase_indentation
+      end
+
+      def finish_fixture(fixture, result, batch_data: nil)
+        return unless verbose?
+
+        fixture_class = fixture.class.inspect
+
+        text = "Finished fixture (Fixture: #{fixture_class}, Result: #{result_text(result)})"
+
+        writer.decrease_indentation
+
+        writer
+          .indent
+          .escape_code(:magenta)
+          .text(text)
+          .escape_code(:reset_fg)
+          .newline
+
+      ensure
+        batch_finished(batch_data) unless batch_data.nil?
+      end
+
       def error(error)
         print_error(error)
       end
