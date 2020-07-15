@@ -100,6 +100,107 @@ module TestBench
           .newline
       end
 
+      def start_test(title, batch_data: nil)
+        batch_starting(batch_data) unless batch_data.nil?
+
+        batch_data = nil if verbose
+
+        if batch_data&.passed? && title.nil?
+          return
+        end
+
+        if batch_data.nil?
+          if title.nil?
+            text = "Starting test"
+          else
+            text = "Starting test #{title.inspect}"
+          end
+
+          writer
+            .indent
+            .escape_code(:faint)
+            .escape_code(:italic)
+            .escape_code(:blue)
+            .text(text)
+            .escape_code(:reset_fg)
+            .escape_code(:reset_italic)
+            .escape_code(:reset_intensity)
+            .newline
+
+        else
+          result = batch_data.result
+
+          print_test_result(title, result)
+        end
+
+        writer.increase_indentation
+      end
+
+      def finish_test(title, result, batch_data: nil)
+        batch_data = nil if verbose?
+
+        if batch_data&.passed? && title.nil?
+          return
+        end
+
+        writer.decrease_indentation
+
+        if batch_data.nil?
+          print_test_result(title, result)
+        end
+
+      ensure
+        batch_finished(batch_data) unless batch_data.nil?
+      end
+
+      def print_test_result(title, result)
+        title ||= default_test_title
+
+        if writer.styling?
+          text = title
+        elsif result
+          text = title
+        else
+          text = "#{title} (failed)"
+        end
+
+        color = result ? :green : :red
+
+        writer.indent
+
+        if result
+          writer.escape_code(:green)
+        else
+          writer.escape_code(:bold).escape_code(:red)
+        end
+
+        writer.text(text)
+
+        writer.escape_code(:reset_fg)
+        unless result
+          writer.escape_code(:reset_intensity)
+        end
+
+        writer.newline
+      end
+
+      def skip_test(title)
+        title ||= default_test_title
+
+        if writer.styling?
+          text = title
+        else
+          text = "#{title} (skipped)"
+        end
+
+        writer
+          .indent
+          .escape_code(:yellow)
+          .text(text)
+          .escape_code(:reset_fg)
+          .newline
+      end
+
       def error(error)
         print_error(error)
       end
@@ -126,6 +227,10 @@ module TestBench
 
       def result_text(result)
         result ? 'pass' : 'failure'
+      end
+
+      def default_test_title
+        'Test'
       end
 
       def self.assure_detail_setting(detail_setting)
