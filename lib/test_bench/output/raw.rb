@@ -111,6 +111,19 @@ module TestBench
           .newline
       end
 
+      def detail(text)
+        return unless verbose? || detail?
+
+        if verbose? && !detail?
+          text = "(detail omitted: #{text})"
+        end
+
+        writer
+          .indent
+          .text(text)
+          .newline
+      end
+
       def result_text(result)
         result ? 'pass' : 'failure'
       end
