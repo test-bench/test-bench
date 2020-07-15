@@ -35,6 +35,11 @@ module TestBench
         end
       end
 
+      def previous_byte_offset
+        @previous_byte_offset ||= 0
+      end
+      attr_writer :previous_byte_offset
+
       def detail?(result=nil)
         result ||= current_batch&.result
 
@@ -213,6 +218,26 @@ module TestBench
           .indent
           .text(text)
           .newline
+      end
+
+      def enter_file(path)
+        text = "Running #{path}"
+
+        writer.text(text).newline
+
+        self.previous_byte_offset = writer.byte_offset
+      end
+
+      def exit_file(path, result)
+        unless writer.byte_offset > previous_byte_offset
+          writer
+            .escape_code(:faint)
+            .text("(Nothing written)")
+            .escape_code(:reset_intensity)
+            .newline
+
+          writer.newline
+        end
       end
 
       def result_text(result)
