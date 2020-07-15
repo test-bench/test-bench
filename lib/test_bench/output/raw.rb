@@ -3,6 +3,11 @@ module TestBench
     class Raw
       Error = Class.new(RuntimeError)
 
+      include Fixture::Output
+      include Writer::Dependency
+
+      include PrintError
+
       def verbose
         instance_variable_defined?(:@verbose) ?
           @verbose :
@@ -41,6 +46,66 @@ module TestBench
         when :off
           false
         end
+      end
+
+      def enter_context(title, batch_data: nil)
+        batch_starting(batch_data) unless batch_data.nil?
+
+        return if title.nil?
+
+        writer
+          .indent
+          .escape_code(:green)
+          .text(title)
+          .escape_code(:reset_fg)
+          .newline
+
+        writer.increase_indentation
+      end
+
+      def exit_context(title, result, batch_data: nil)
+        return if title.nil?
+
+        writer.decrease_indentation
+
+        if verbose?
+          text = "Finished context #{title.inspect} (Result: #{result_text(result)})"
+
+          color = result ? :green : :red
+
+          writer
+            .indent
+            .escape_code(:faint).escape_code(:italic).escape_code(color)
+            .text(text)
+            .escape_code(:reset_fg).escape_code(:reset_italic).escape_code(:reset_intensity)
+            .newline
+        end
+
+        if writer.indentation_depth.zero?
+          writer.newline
+        end
+
+      ensure
+        batch_finished(batch_data) unless batch_data.nil?
+      end
+
+      def skip_context(title)
+        return if title.nil?
+
+        writer
+          .indent
+          .escape_code(:yellow)
+          .text(title)
+          .escape_code(:reset_fg)
+          .newline
+      end
+
+      def error(error)
+        print_error(error)
+      end
+
+      def result_text(result)
+        result ? 'pass' : 'failure'
       end
 
       def self.assure_detail_setting(detail_setting)
