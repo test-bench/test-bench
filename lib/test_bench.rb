@@ -18,3 +18,5 @@ require 'test_bench/output/print_error'
 
 require 'test_bench/output/summary'
 require 'test_bench/output/summary/session'
+
+require 'test_bench/output/batch_data'
