@@ -24,3 +24,5 @@ require 'test_bench/output/batch_data'
 require 'test_bench/output/raw'
 
 require 'test_bench/output/buffer'
+
+require 'test_bench/output/log'
