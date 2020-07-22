@@ -26,3 +26,5 @@ require 'test_bench/output/raw'
 require 'test_bench/output/buffer'
 
 require 'test_bench/output/log'
+
+require 'test_bench/output'
