@@ -73,6 +73,14 @@ module TestBench
             env['TEST_BENCH_EXCLUDE_FILE_PATTERN'] = pattern_text
           end
 
+          parser.on('-l', '--log-level LEVEL', %{Set the internal logging level to LEVEL (Default: #{Output::Log::Defaults.level})}) do |level_text|
+            level = level_text.to_sym
+
+            Fixture::Output::Log.assure_level(level)
+
+            env['TEST_BENCH_LOG_LEVEL'] = level_text
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -83,6 +91,7 @@ module TestBench
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
           #{parser.summary_indent}TEST_BENCH_DETAIL                  Same as -d or --detail
           #{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
+          #{parser.summary_indent}TEST_BENCH_LOG_LEVEL               Same as -l or --log-level
 
           TEXT
         end
