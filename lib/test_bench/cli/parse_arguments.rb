@@ -49,6 +49,18 @@ module TestBench
             env['TEST_BENCH_ABORT_ON_ERROR'] = abort_on_error ? 'on' : 'off'
           end
 
+          parser.on('-d', '--[no-]detail [DETAIL]', %{Always show (or hide) details (Default: #{Output::Raw::Defaults.detail})}) do |detail|
+            if detail.nil?
+              detail = 'on'
+            elsif detail == true
+              detail = 'on'
+            elsif detail == false
+              detail = 'off'
+            end
+
+            env['TEST_BENCH_DETAIL'] = detail
+          end
+
           parser.separator(<<~TEXT)
 
           Paths to test files (and directories containing test files) can be given after any command line arguments or via STDIN (or both).
@@ -57,6 +69,7 @@ module TestBench
           The following environment variables can also control execution:
 
           #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
+          #{parser.summary_indent}TEST_BENCH_DETAIL                  Same as -d or --detail
 
           TEXT
         end
