@@ -54,6 +54,17 @@ module TestBench
 
       attr_accessor :current_file
 
+      def configure(writer: nil, device: nil, styling: nil)
+        Writer.configure(self, writer: writer, device: device, styling: styling)
+        Timer.configure(self)
+      end
+
+      def self.build(writer: nil, device: nil, styling: nil)
+        instance = new
+        instance.configure(writer: writer, device: device, styling: styling)
+        instance
+      end
+
       def enter_file(file)
         timer.start
 
