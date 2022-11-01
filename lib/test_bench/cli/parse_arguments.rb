@@ -137,7 +137,7 @@ The following environment variables can also control execution:
 
 #{parser.summary_indent}TEST_BENCH_ABORT_ON_ERROR          Same as -a or --abort-on-error
 #{parser.summary_indent}TEST_BENCH_DETAIL                  Same as -d or --detail
-#{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude-file-pattern
+#{parser.summary_indent}TEST_BENCH_EXCLUDE_FILE_PATTERN    Same as -x or --exclude
 #{parser.summary_indent}TEST_BENCH_LOG_LEVEL               Same as -l or --log-level
 #{parser.summary_indent}TEST_BENCH_OMIT_BACKTRACE_PATTERN  Same as -o or --omit-backtrace-pattern
 #{parser.summary_indent}TEST_BENCH_OUTPUT_STYLING          Same as -s or --output-styling
