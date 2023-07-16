@@ -21,13 +21,86 @@ module TestBench
     end
     attr_writer :version
 
+    def stdin
+      @stdin ||= STDIN
+    end
+    attr_writer :stdin
+
     def writer
       @writer ||= Output::Writer::Substitute.build
     end
     attr_writer :writer
 
+    def run
+      @run ||= Run::Substitute.build
+    end
+    attr_writer :run
+
+    def random
+      @random ||= Random::Substitute.build
+    end
+    attr_writer :random
+
     def initialize(*arguments)
       @arguments = arguments
+    end
+
+    def self.build(arguments=nil, env: nil)
+      arguments ||= ::ARGV
+      env ||= ::ENV
+
+      instance = new(*arguments)
+      instance.env = env
+      Output::Writer.configure(instance)
+      Run.configure(instance)
+      instance
+    end
+
+    def self.call(arguments=nil, env: nil)
+      instance = build(arguments, env:)
+
+      session = instance.run.session
+      Session::Store.reset(session)
+
+      instance.()
+    end
+
+    def call
+      parse_arguments
+
+      if exit_code?
+        return exit_code
+      end
+
+      writer.puts(RUBY_DESCRIPTION)
+      writer.puts("Random Seed: #{random.seed.to_s(36)}")
+      writer.puts
+
+      default_path = Defaults.tests_directory
+
+      result = run.! do |run|
+        if not stdin.tty?
+          until stdin.eof?
+            path = stdin.gets(chomp: true)
+
+            next if path.empty?
+
+            run << path
+          end
+        end
+
+        arguments.each do |path|
+          run << path
+        end
+
+        if not run.ran?
+          run << default_path
+        end
+      end
+
+      self.exit_code = self.class.exit_code(result)
+
+      exit_code
     end
 
     def parse_arguments
