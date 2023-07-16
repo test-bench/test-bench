@@ -1,4 +1,15 @@
 module TestBench
+  def self.activate(receiver=nil, session: nil)
+    receiver ||= TOPLEVEL_BINDING.receiver
+
+    receiver.extend(Fixture)
+    receiver.extend(DeactivationVariants)
+
+    Session.configure(receiver, session:, attr_name: :test_session)
+
+    session
+  end
+
   def self.context(title=nil, session: nil, &block)
     evaluate(session:) do
       context(title) do
