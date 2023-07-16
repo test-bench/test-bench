@@ -1,4 +1,15 @@
 module TestBench
+  def self.activate(receiver=nil, session_store: nil)
+    receiver ||= TOPLEVEL_BINDING.receiver
+    session_store ||= Session::Store.instance
+
+    receiver.extend(Fixture)
+    receiver.extend(DeactivatedVariants)
+
+    receiver.extend(TestSession)
+    receiver.test_session_store = session_store
+  end
+
   def self.context(title=nil, session: nil, &block)
     evaluate(session:) do
       context(title) do
@@ -30,6 +41,14 @@ module TestBench
 
     def _test(title=nil, &)
       test(title)
+    end
+  end
+
+  module TestSession
+    attr_accessor :test_session_store
+
+    def test_session
+      test_session_store.fetch
     end
   end
 end
