@@ -107,7 +107,7 @@ For more information on the batch runner, visit its [documentation page](http://
 
 ### Command Line Runner
 
-In addition to being able to run tests using the raw `ruby` executable, TestBench also provides it's own command line executable that offers a bit more power.
+In addition to being able to run tests using the raw `ruby` executable, TestBench also provides its own command line executable that offers a bit more power.
 
 The `bench` executable can be used to run individual test files or directories containing test files.
 
@@ -129,7 +129,7 @@ To run a directory of test files, and its subdirectories, specify the directory 
 
 #### Default Test Directory
 
-By default, when the `bench` commend is executed with no arguments, it will run all the test files under `test/automated`.
+By default, when the `bench` command is executed with no arguments, it will run all the test files under `test/automated`.
 
 This default can be changed by setting the environment variable `TEST_BENCH_TESTS_DIRECTORY`.
 
@@ -205,7 +205,7 @@ Note: each test must perform an assertion, otherwise the test will fail.
 
 #### Optional Titles
 
-Titles are optional for both contexts and tests. Contexts without a title serve solely as lexical scopes and do not effect the test output in any way; nothing is printed and the indentation is not changed. Tests without titles are treated similarly, but if a test fails, a title of `Test` is used to indicate the test failure. Also, both contexts and tests can also be skipped by omitting the block argument.
+Titles are optional for both contexts and tests. Contexts without a title serve solely as lexical scopes and do not affect the test output in any way; nothing is printed, and the indentation is not changed. Tests without titles are treated similarly, but if a test fails, a title of `Test` is used to indicate the test failure. Also, both contexts and tests can also be skipped by omitting the block argument.
 
 ``` ruby
 context "Some Context" do
