@@ -48,7 +48,7 @@ Activating TestBench with `TestBench.activate` makes the core DSL available in t
 
 The effect of activating TestBench is very limited. It adds TestBench's core API methods to Ruby's `main` object, which is the Ruby script runner. Activating TestBench has no effects on any other objects or classes in the Ruby system except for the `main` script runner.
 
-It's not strictly necessary to activate TestBench in order to use it. See the [Using TestBench Without Monkey Patching](/user-guide/recipes.md#use-testbench-without-monkey-patching) recipe for specifics.
+It's not strictly necessary to activate TestBench in order to use it. See the [Using TestBench Without Monkey Patching](http://test-bench.software/user-guide/recipes.html#use-testbench-without-monkey-patching) recipe for specifics.
 
 ### Load the Test Initialization File
 
