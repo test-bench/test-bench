@@ -1,12 +1,12 @@
+![TestBench](http://test-bench.software/test-bench-icon-130x115.png)
+
 # Test Bench
 
-*[Summary goes here]*
-
-*[Description goes here]*
+Principled test framework for Ruby.
 
 ## Documentation
 
-*[Link to documentation goes here]*
+See the [TestBench website](http://test-bench.software) for more information, examples, and user guides.
 
 ## License
 
