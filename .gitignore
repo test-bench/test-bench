@@ -1,0 +1,6 @@
+/gems
+*.gem
+
+*sketch*
+
+/tmp
