@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |spec|
-  spec.name = 'TEMPLATE-GEM-NAME'
+  spec.name = 'test_bench'
   spec.version = '0.0.0.0'
 
   spec.summary = "## Summary goes here"
@@ -8,14 +8,14 @@ Gem::Specification.new do |spec|
   ## Description goes here
   TEXT
 
-  spec.homepage = 'TEMPLATE-HOMEPAGE'
+  spec.homepage = 'http://test-bench.software'
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/TEMPLATE-GITHUB-ORG/TEMPLATE-REPO-NAME'
+  spec.metadata['source_code_uri'] = 'https://github.com/test-bench-demo/test-bench'
 
   allowed_push_host = ENV.fetch('RUBYGEMS_PUBLIC_AUTHORITY') { 'https://rubygems.org' }
   spec.metadata['allowed_push_host'] = allowed_push_host
 
-  spec.metadata['namespace'] = 'TEMPLATE-NAMESPACE'
+  spec.metadata['namespace'] = 'TestBench'
 
   spec.license = 'MIT'
 
@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.platform = Gem::Platform::RUBY
 
-  spec.add_development_dependency 'TEMPLATE-TEST-BENCH-GEM-NAME'
+  spec.add_development_dependency 'test_bench_bootstrap'
 end
