@@ -18,14 +18,13 @@ echo "Publishing"
 echo "= = ="
 
 if [ -z "${RUBYGEMS_PRIVATE_AUTHORITY:-}" ]; then
-  printf "\n\e[31mError: RUBYGEMS_PRIVATE_AUTHORITY is not set\e[39m\n"
-  false
+  printf "\n\e[1;33mWarning: RUBYGEMS_PRIVATE_AUTHORITY is not set\e[39;22m\n"
 fi
-rubygems_private_authority=$RUBYGEMS_PRIVATE_AUTHORITY
+rubygems_private_authority="${RUBYGEMS_PRIVATE_AUTHORITY:-}"
 rubygems_private_authority_access_key=${RUBYGEMS_PRIVATE_AUTHORITY_ACCESS_KEY:-}
 
 if [ -z "${RUBYGEMS_PUBLIC_AUTHORITY:-}" ]; then
-  printf "\n\e[31mError: RUBYGEMS_PUBLIC_AUTHORITY is not set\e[39m\n"
+  printf "\n\e[1;31mError: RUBYGEMS_PUBLIC_AUTHORITY is not set\e[39;22m\n"
   false
 fi
 rubygems_public_authority=$RUBYGEMS_PUBLIC_AUTHORITY
@@ -56,9 +55,12 @@ for gem in $(find . -maxdepth 2 -name '*.gem'); do
   if [ -n "$license" ]; then
     rubygems_authority="$rubygems_public_authority"
     rubygems_authority_access_key="$rubygems_public_authority_access_key"
-  else
+  elif [ -n "$rubygems_private_authority" ]; then
     rubygems_authority="$rubygems_private_authority"
     rubygems_authority_access_key="$rubygems_private_authority_access_key"
+  else
+    echo -e "\e[1;31mLicense is proprietary and RUBYGEMS_PRIVATE_AUTHORITY is not set\e[m"
+    false
   fi
   echo "Rubygems Authority: $rubygems_authority"
 
