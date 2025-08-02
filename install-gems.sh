@@ -224,7 +224,7 @@ if not gem_load_paths.empty?
     gem_path = File.expand_path(gem_path, gem_path_base)
 
     if not \$LOAD_PATH.include?(gem_path)
-      \$LOAD_PATH.unshift(gem_path)
+      \$LOAD_PATH.push(gem_path)
     end
   end
   INNER_RUBY
